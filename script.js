@@ -1,6 +1,7 @@
 // Trip data
 const tripData = {
   days: [
+    /* ───────────────────────  DAY 1  ─────────────────────── */
     {
       day: 1,
       date: "2 июля",
@@ -14,28 +15,31 @@ const tripData = {
           time: "12:00-12:30",
           description: "Аэропорт Gardermoen, проверка документов и инструктаж",
           type: "logistics",
-          maps: "https://goo.gl/maps/oslo-gardermoen",
-          notes:
-            "Взять телефон компании проката, проверить все системы кемпера",
+          maps: "https://maps.google.com/?q=Oslo+Airport+Gardermoen",
+          notes: "Взять телефон прокатчика, проверить все системы кемпера",
         },
         {
           name: "Закупка продуктов",
           time: "12:30-13:30",
           description: "Rema 1000 или Kiwi рядом с аэропортом",
           type: "shopping",
-          maps: "https://goo.gl/maps/rema1000-gardermoen",
-          notes: "Продукты на 2-3 дня, не забыть норвежские кроны",
+          maps: "https://maps.google.com/?q=Kiwi+Gardermoen",
+          notes:
+            "Запастись на 2-3 дня; норвежские кроны пригодятся на платных дорогах",
         },
         {
           name: "Lo-Vik Camping",
           time: "21:30",
-          description: "Кемпинг прямо у фьорда в Лоене",
+          description: "Кемпинг прямо у фьорда в Лоэне",
           type: "accommodation",
-          maps: "https://www.lovik-camping.no",
-          notes: "Запасной вариант: Sande Camping (2 км далее)",
+          maps: "https://maps.google.com/?q=Lo-Vik+Camping+Loen",
+          notes:
+            "Запасной вариант — Sande Camping ( https://maps.google.com/?q=Sande+Camping+Loen )",
         },
       ],
     },
+
+    /* ───────────────────────  DAY 2  ─────────────────────── */
     {
       day: 2,
       date: "3 июля",
@@ -46,81 +50,98 @@ const tripData = {
       locations: [
         {
           name: "Via Ferrata Loen",
-          time: "09:00-14:00",
-          description: "Маршрут 'Classic', подвесной мост на высоте 750м",
+          time: "08:00-13:30",
+          description: "Маршрут 'Classic', подвесной мост Gjølmunne (750 м)",
           type: "activity",
-          maps: "https://www.loenactive.no",
-          notes: "Забронировать заранее! Взять перчатки и воду",
+          maps: "https://maps.google.com/?q=Loen+Active",
+          notes: "Бронь на 08:00; перчатки, 1½ л воды, слойная одежда",
         },
         {
           name: "Долина Norangsdalen",
-          time: "14:30-16:30",
-          description: "Затонувшая деревня в озере Lygnstøylvatnet",
+          time: "13:30-15:30",
+          description:
+            "Озеро Lygnstøylvatnet (затонувшая деревня) и водопад Norangsfossen",
           type: "sightseeing",
-          maps: "https://goo.gl/maps/norangsdalen",
-          notes: "Мистическое место, отличные фото",
+          maps: "https://maps.google.com/?q=Lygnstøylvatnet",
+          notes: "Фантастические фото сквозь прозрачную воду",
         },
         {
-          name: "Паром Eidsdal-Linge",
-          time: "16:30-17:30",
-          description: "Переправа через фьорд, 20 минут",
+          name: "Паром Eidsdal → Linge",
+          time: "16:00-17:10",
+          description: "Переправа 10 мин, отправления каждые 20-30 мин летом",
           type: "transport",
-          maps: "https://www.fjord1.no",
-          notes: "Каждые 30 мин, ~200 NOK, возможны очереди",
+          maps: "https://maps.google.com/?q=Eidsdal+ferjekai",
+          notes: "~200 NOK, возможна очередь до 40 мин",
         },
         {
           name: "Valldal Camping",
-          time: "18:00",
+          time: "17:30",
           description: "Кемпинг в 'клубничной столице' Норвегии",
           type: "accommodation",
-          maps: "https://valldal-camping.no",
-          notes: "Если успеваем - заехать в Jordbærstova за клубничным тортом",
+          maps: "https://maps.google.com/?q=Valldal+Camping",
+          notes:
+            "Успеете в Jordbærstova ( https://maps.google.com/?q=Jordbærstova+Valldal ) если до 17:00",
         },
       ],
     },
+
+    /* ───────────────────────  DAY 3  ─────────────────────── */
     {
       day: 3,
       date: "4 июля",
-      title: "Trollstigen → Atlantic Road",
-      distance: "290 км",
-      time: "5.5 часов",
+      title: "Trollstigen (плато) → Åndalsnes → Atlantic Road",
+      distance: "295 км",
+      time: "6 часов",
       status: "planned",
       locations: [
         {
-          name: "Trollstigen (Дорога Троллей)",
-          time: "08:00-10:30",
-          description: "11 крутых поворотов серпантина, водопад Stigfossen",
+          name: "Trollstigen плато (дорога закрыта ↓ Åndalsnes)",
+          time: "08:00-09:30",
+          description:
+            "Подъём на плато со стороны Valldal; лучшие виды на серпантин",
           type: "sightseeing",
-          maps: "https://goo.gl/maps/trollstigen",
-          notes: "Ехать медленно на кемпере, смотровая площадка обязательна",
-        },
-        {
-          name: "Trollveggen (Стена Троллей)",
-          time: "10:30-11:00",
-          description: "Самая высокая вертикальная стена в Европе (1100м)",
-          type: "sightseeing",
-          maps: "https://goo.gl/maps/trollveggen",
-          notes: "Иногда видны альпинисты на стене",
-        },
-        {
-          name: "Atlantic Road",
-          time: "14:30-17:30",
-          description: "8.3 км дороги с 8 мостами над океаном",
-          type: "sightseeing",
-          maps: "https://www.atlanticroad.com",
+          maps: "https://maps.google.com/?q=Trollstigen+plat%C3%A5",
           notes:
-            "Storseisundet Bridge - самый фотогеничный. При шторме волны через дорогу!",
+            "Участок со стороны Åndalsnes открыт с 14 июля; спускаемся обратно тем же путём",
+        },
+        {
+          name: "Romsdalsgondolen",
+          time: "10:45-12:00",
+          description: "Канатка 708 м, панорама 360° на Trollveggen и Romsdal",
+          type: "activity",
+          maps: "https://maps.google.com/?q=Romsdalsgondolen",
+          notes: "Билеты онлайн дешевле; заложить ≥ 75 мин с фото",
+        },
+        {
+          name: "Trollveggen Visitor Centre",
+          time: "12:00-12:30",
+          description:
+            "Вертикальная стена 1100 м; смотровая площадка у подножия",
+          type: "sightseeing",
+          maps: "https://maps.google.com/?q=Trollveggen+visitor+center",
+          notes: "Иногда видны альпинисты",
+        },
+        {
+          name: "Atlantic Road (Atlanterhavsvegen)",
+          time: "15:30-18:00",
+          description:
+            "8,3 км мостов над океаном; Eldhusøya trail, Storseisundet Bridge",
+          type: "sightseeing",
+          maps: "https://maps.google.com/?q=Atlanterhavsveien",
+          notes: "Заглянуть в Kvernes Stave Church по дороге (11-17)",
         },
         {
           name: "Atlanterhavsveien Camping",
-          time: "17:30",
+          time: "18:00",
           description: "Кемпинг с видом на океан",
           type: "accommodation",
-          maps: "https://atlanterhavsveien-camping.no",
-          notes: "Места с видом на океан, ресторан на территории",
+          maps: "https://maps.google.com/?q=Atlanterhavsveien+Camping",
+          notes: "Ресторан на территории, душ за жетон",
         },
       ],
     },
+
+    /* ───────────────────────  DAY 4  ─────────────────────── */
     {
       day: 4,
       date: "5 июля",
@@ -130,31 +151,34 @@ const tripData = {
       status: "planned",
       locations: [
         {
-          name: "Ålesund",
+          name: "Ålesund (Aksla)",
           time: "10:30-13:00",
-          description: "Город в стиле ар-нуво, смотровая площадка Aksla",
+          description:
+            "418 ступеней к платформе Fjellstua; ар-нуво-центр города",
           type: "sightseeing",
-          maps: "https://www.visitalesund.com",
-          notes: "418 ступеней на Aksla, рыбный рынок Brogata для обеда",
+          maps: "https://maps.google.com/?q=Aksla+viewpoint+%C3%85lesund",
+          notes: "Обед на рыбном рынке Brogata",
         },
         {
-          name: "Остров Runde",
+          name: "Runde Camping",
           time: "15:00",
-          description: "Заселение в Runde Camping",
+          description: "Кемпинг на северной стороне острова",
           type: "accommodation",
-          maps: "https://runde-camping.no",
-          notes: "Защищен от океанских ветров",
+          maps: "https://maps.google.com/?q=Runde+Camping",
+          notes: "Уютно и безветренно",
         },
         {
           name: "Наблюдение за тупиками",
           time: "19:00-22:00",
-          description: "Утесы Rundebranden, 45 минут подъема",
+          description: "Маршрут Rundebranden (45 мин подъёма)",
           type: "activity",
-          maps: "https://goo.gl/maps/runde-puffins",
-          notes: "Лучшее время после 19:00, взять бинокль! Осторожно у обрывов",
+          maps: "https://maps.google.com/?q=Rundebranden+trailhead",
+          notes: "Птицы возвращаются 19-22:30; взять бинокль, ветрозащиту",
         },
       ],
     },
+
+    /* ───────────────────────  DAY 5  ─────────────────────── */
     {
       day: 5,
       date: "6 июля",
@@ -164,47 +188,49 @@ const tripData = {
       status: "optional",
       locations: [
         {
-          name: "Hjørundfjord (опционально)",
-          time: "10:30-12:00",
-          description: "Паром Sæbø-Trandal, 'Альпы у океана'",
-          type: "sightseeing",
-          maps: "https://www.hjorundfjord.no",
-          notes: "ПРОВЕРИТЬ расписание парома! Альтернатива: прямо через Ørsta",
+          name: "Паром Sæbø → Trandal (по расписанию!)",
+          time: "10:30-11:00",
+          description: "20 мин через Hjørundfjord; 'Альпы у океана'",
+          type: "transport",
+          maps: "https://maps.google.com/?q=S%C3%A6b%C3%B8+ferjekai",
+          notes: "Если рейса нет — ехать через Ørsta (+55 км)",
         },
         {
           name: "Hotel Union Øye",
-          time: "11:00-12:00",
-          description: "Исторический отель 1891г, кофе с видом на фьорд",
+          time: "11:15-12:00",
+          description: "Исторический отель 1891 г.; кофе с видом на фьорд",
           type: "optional",
-          maps: "https://www.unionoye.no",
-          notes: "Останавливались: Кайзер Вильгельм II, Ибсен, Амундсен",
+          maps: "https://maps.google.com/?q=Hotel+Union+%C3%98ye",
+          notes: "Гости: Кайзер Вильгельм II, Ибсен, Амундсен",
         },
         {
-          name: "Паром Hellesylt-Geiranger",
+          name: "Паром Hellesylt → Geiranger",
           time: "14:00-15:10",
-          description: "Круиз по Geirangerfjord (UNESCO), водопады",
+          description: "Круиз 1 ч 10 мин по Geirangerfjord (UNESCO)",
           type: "transport",
-          maps: "https://www.geirangerfjord.no",
-          notes: "ЗАБРОНИРОВАТЬ ОНЛАЙН ЗАРАНЕЕ! Обязательно на открытой палубе",
+          maps: "https://maps.google.com/?q=Hellesylt+ferjekai",
+          notes: "Бронируйте онлайн заранее!",
         },
         {
           name: "Dalsnibba Skywalk",
           time: "16:00-17:30",
-          description: "Смотровая площадка 1500м, 21 км серпантина",
+          description: "Панорама с 1500 м; 21 км серпантина",
           type: "sightseeing",
-          maps: "https://www.dalsnibba.no",
-          notes: "260 NOK за машину. При тумане не ехать!",
+          maps: "https://maps.google.com/?q=Dalsnibba+Skywalk",
+          notes: "260 NOK за авто; не ехать в туман",
         },
         {
           name: "Geiranger Camping",
           time: "15:30",
-          description: "Кемпинг в самом известном фьорде",
+          description: "Кемпинг на берегу знаменитого фьорда",
           type: "accommodation",
-          maps: "https://geiranger-camping.no",
-          notes: "Забронировать заранее - очень популярно!",
+          maps: "https://maps.google.com/?q=Geiranger+Camping",
+          notes: "Рекомендуется бронирование за 1-2 мес.",
         },
       ],
     },
+
+    /* ───────────────────────  DAY 6  ─────────────────────── */
     {
       day: 6,
       date: "7 июля",
@@ -214,23 +240,25 @@ const tripData = {
       status: "planned",
       locations: [
         {
-          name: "Lom",
+          name: "Lom (Fossheim Bakery + Stave Church)",
           time: "10:30-11:30",
-          description: "Fossheim Bakery, Lom Stave Church (1170г)",
+          description: "Булочки skillingsbolle и ставкирка 1170 г.",
           type: "sightseeing",
-          maps: "https://www.visitlom.com",
-          notes: "Skillingsbolle (булочка с корицей), церковь 100 NOK",
+          maps: "https://maps.google.com/?q=Lom+Stave+Church",
+          notes: "Вход 100 NOK; стойка выпечки легендарна",
         },
         {
-          name: "Lillehammer",
+          name: "Lillehammer Camping",
           time: "17:00",
-          description: "Олимпийский город, лыжные трамплины",
+          description: "Кемпинг у озера Mjøsa, рядом олимпийские трамплины",
           type: "accommodation",
-          maps: "https://www.lillehammer.com",
-          notes: "Lillehammer Camping у озера Mjøsa",
+          maps: "https://maps.google.com/?q=Lillehammer+Camping",
+          notes: "Вечером пройтись к Lysgårdsbakken",
         },
       ],
     },
+
+    /* ───────────────────────  DAY 7  ─────────────────────── */
     {
       day: 7,
       date: "8 июля",
@@ -242,10 +270,10 @@ const tripData = {
         {
           name: "Сдача кемпера",
           time: "11:30-12:00",
-          description: "Аэропорт Gardermoen, осмотр и трансфер",
+          description: "Осмотр и трансфер в аэропорт Gardermoen",
           type: "logistics",
-          maps: "https://goo.gl/maps/oslo-gardermoen",
-          notes: "Заправить полный бак, уборка, опустошить баки",
+          maps: "https://maps.google.com/?q=Oslo+Airport+Gardermoen",
+          notes: "Полный бак, уборка салона, слить серую воду",
         },
       ],
     },
@@ -295,38 +323,38 @@ const checklistData = {
 const budgetData = [
   {
     category: "Аренда кемпера",
-    amount: "40000-60000",
-    note: "7 дней, включая страховку",
+    amount: "18 000–30 000 NOK (≈ 1 570–2 620 €)",
+    note: "7 дней, средний кемпер 2 200–3 200 NOK/сутки с страховкой",
   },
   {
-    category: "Топливо",
-    amount: "15000-20000",
-    note: "~2000 км, дизель ~16-18 NOK/л",
+    category: "Топливо и дороги",
+    amount: "5 000–7 000 NOK (≈ 440–610 €)",
+    note: "≈200 л дизеля по 19,7 NOK + AutoPASS/платные дороги",
   },
   {
     category: "Кемпинги",
-    amount: "15000-25000",
-    note: "6 ночей, 300-500 NOK/ночь",
+    amount: "2 000–3 500 NOK (≈ 175–305 €)",
+    note: "6 ночей, 250–350 NOK/ночь с электричеством",
   },
   {
     category: "Паромы",
-    amount: "8000-12000",
-    note: "5 переправ, 100-300 NOK каждая",
+    amount: "1 000–2 000 NOK (≈ 90–175 €)",
+    note: "Eidsdal-Linge, Åfarnes-Sølsnes, Molde-Vestnes, Geiranger и др.",
   },
   {
     category: "Еда",
-    amount: "20000-30000",
-    note: "Продукты + 2-3 ресторана",
+    amount: "6 000–10 000 NOK (≈ 525–875 €)",
+    note: "Продукты + 2 ресторана в Ålesund/Loen",
   },
   {
     category: "Развлечения",
-    amount: "8000-15000",
-    note: "Via Ferrata, входные билеты",
+    amount: "3 000–5 000 NOK (≈ 265–435 €)",
+    note: "Via Ferrata Loen, Romsdalsgondolen, Dalsnibba",
   },
   {
     category: "Прочее",
-    amount: "5000-10000",
-    note: "Сувениры, непредвиденное",
+    amount: "2 000–5 000 NOK (≈ 175–435 €)",
+    note: "Сувениры, душевые жетоны, мелкие расходы",
   },
 ];
 
@@ -371,9 +399,9 @@ function showSection(sectionName) {
 
   // Update nav buttons
   document.querySelectorAll(".nav-btn").forEach((btn) => {
-    btn.classList.remove("bg-white", "bg-opacity-30");
+    btn.classList.remove("active");
   });
-  event.target.classList.add("bg-white", "bg-opacity-30");
+  event.target.classList.add("active");
 
   // Save current section to localStorage
   localStorage.setItem("norwayTripCurrentSection", sectionName);
@@ -381,35 +409,56 @@ function showSection(sectionName) {
 
 function renderItinerary() {
   const container = document.querySelector("#itinerary .grid");
+  container.className = "timeline"; // Change from grid to timeline
   container.innerHTML = "";
 
   tripData.days.forEach((day) => {
-    const statusClass = `status-${day.status}`;
-    const dayCard = document.createElement("div");
-    dayCard.className = `day-card glass rounded-xl p-6 ${statusClass}`;
-    dayCard.innerHTML = `
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xl font-bold text-white">День ${day.day}</h3>
-        <span class="status-indicator ${statusClass}"></span>
+    const timelineItem = document.createElement("div");
+    timelineItem.className = "timeline-item";
+
+    timelineItem.innerHTML = `
+      <div class="timeline-dot status-${day.status}">
+        ${day.day}
       </div>
-      <p class="text-white opacity-90 mb-2">${day.date} • ${day.title}</p>
-      <p class="text-white opacity-75 text-sm mb-4">${day.distance} • ${
-      day.time
-    }</p>
-      <div class="space-y-2">
+      
+      <div class="timeline-card">
+        <div class="timeline-header">
+          <div class="timeline-title">
+            ${day.title}
+          </div>
+          <div class="timeline-meta">
+            <span>${day.date}</span>
+            <span>${day.locations.length} остановок</span>
+          </div>
+          <div class="timeline-stats">
+            <span>📍 ${day.distance}</span>
+            <span>⏱️ ${day.time}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="timeline-locations">
+        <div class="locations-header">
+          📋 Детали дня
+        </div>
         ${day.locations
           .map(
             (location) => `
-          <div class="location-card bg-white bg-opacity-10 rounded-lg p-3 cursor-pointer hover:bg-opacity-20 transition-all" 
-               onclick="showLocationDetails('${day.day}', '${location.name}')">
-            <div class="flex justify-between items-start">
-              <div class="flex-1">
-                <h4 class="font-medium text-white text-sm">${location.name}</h4>
-                <p class="text-white opacity-75 text-xs">${location.time}</p>
-              </div>
-              <span class="text-xs bg-white bg-opacity-20 text-white px-2 py-1 rounded">
-                ${getLocationTypeEmoji(location.type)}
-              </span>
+          <div class="location-item" onclick="showLocationDetails('${
+            day.day
+          }', '${location.name}')">
+            <div class="location-icon ${location.type}">
+              ${getLocationTypeEmoji(location.type)}
+            </div>
+            <div class="location-details">
+              <div class="location-name">${location.name}</div>
+              <div class="location-time">${location.time}</div>
+              <div class="location-description">${location.description}</div>
+              ${
+                location.notes
+                  ? `<div class="location-notes">💡 ${location.notes}</div>`
+                  : ""
+              }
             </div>
           </div>
         `
@@ -417,7 +466,8 @@ function renderItinerary() {
           .join("")}
       </div>
     `;
-    container.appendChild(dayCard);
+
+    container.appendChild(timelineItem);
   });
 }
 
@@ -427,9 +477,9 @@ function renderChecklist() {
 
   Object.entries(checklistData).forEach(([category, items]) => {
     const categoryDiv = document.createElement("div");
-    categoryDiv.className = "bg-white bg-opacity-10 rounded-lg p-4";
+    categoryDiv.className = "bg-white border border-gray-200 rounded-lg p-4";
     categoryDiv.innerHTML = `
-      <h3 class="font-semibold text-white mb-3 capitalize">${getCategoryTitle(
+      <h3 class="font-semibold text-primary mb-3 capitalize">${getCategoryTitle(
         category
       )}</h3>
       <div class="space-y-2">
@@ -441,16 +491,16 @@ function renderChecklist() {
             <label class="checklist-item flex items-start space-x-2 cursor-pointer ${
               isChecked ? "completed" : ""
             }">
-              <input type="checkbox" class="mt-1 rounded" onchange="toggleChecklistItem(this, '${itemKey}')" ${
+              <input type="checkbox" class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500" onchange="toggleChecklistItem(this, '${itemKey}')" ${
               isChecked ? "checked" : ""
             }>
-              <span class="text-white text-sm">${item}</span>
+              <span class="text-primary text-sm">${item}</span>
             </label>
           `;
           })
           .join("")}
       </div>
-      <div class="mt-3 text-xs text-white opacity-75">
+      <div class="mt-3 text-xs text-muted">
         <span class="completed-count">${getCompletedCount(
           category
         )}</span> из ${items.length} выполнено
@@ -464,33 +514,46 @@ function renderBudget() {
   const container = document.querySelector("#budget .grid");
   container.innerHTML = "";
 
+  // Calculate totals from the actual amounts in Euro
+  const euroAmounts = [
+    "1 570–2 620", // Аренда кемпера
+    "440–610", // Топливо и дороги
+    "175–305", // Кемпинги
+    "90–175", // Паромы
+    "525–875", // Еда
+    "265–435", // Развлечения
+    "175–435", // Прочее
+  ];
+
   let totalMin = 0,
     totalMax = 0;
 
-  budgetData.forEach((item) => {
-    const amounts = item.amount.split("-");
-    const min = parseInt(amounts[0]);
-    const max = parseInt(amounts[1] || amounts[0]);
+  euroAmounts.forEach((amount) => {
+    const [min, max] = amount
+      .split("–")
+      .map((val) => parseInt(val.replace(/\s/g, "")));
     totalMin += min;
-    totalMax += max;
+    totalMax += max || min;
+  });
 
+  budgetData.forEach((item) => {
     const budgetItem = document.createElement("div");
-    budgetItem.className = "bg-white bg-opacity-10 rounded-lg p-4";
+    budgetItem.className = "bg-white border border-gray-200 rounded-lg p-4";
     budgetItem.innerHTML = `
-      <h3 class="font-semibold text-white mb-2">${item.category}</h3>
-      <p class="text-2xl font-bold text-white mb-1">${item.amount} ₽</p>
-      <p class="text-white opacity-75 text-sm">${item.note}</p>
+      <h3 class="font-semibold text-primary mb-2">${item.category}</h3>
+      <p class="text-2xl font-bold text-primary mb-1">${item.amount}</p>
+      <p class="text-muted text-sm">${item.note}</p>
     `;
     container.appendChild(budgetItem);
   });
 
   // Add total
   const totalDiv = document.createElement("div");
-  totalDiv.className = "bg-white bg-opacity-20 rounded-lg p-4 md:col-span-2";
+  totalDiv.className =
+    "bg-blue-50 border border-blue-200 rounded-lg p-4 md:col-span-2";
   totalDiv.innerHTML = `
-    <h3 class="font-semibold text-white mb-2">💰 Общий бюджет</h3>
-    <p class="text-3xl font-bold text-white mb-1">${totalMin}-${totalMax} ₽</p>
-    <p class="text-white opacity-75 text-sm">На человека при поездке вчетвером</p>
+    <h3 class="font-semibold text-primary mb-2">💰 Общий бюджет</h3>
+    <p class="text-3xl font-bold text-blue-700 mb-1">${totalMin.toLocaleString()}–${totalMax.toLocaleString()} €</p>
   `;
   container.appendChild(totalDiv);
 }
@@ -501,16 +564,16 @@ function renderNotes() {
 
   notes.forEach((note, index) => {
     const noteDiv = document.createElement("div");
-    noteDiv.className = "note-bubble bg-white bg-opacity-10 rounded-lg p-4";
+    noteDiv.className = "note-bubble p-4";
     noteDiv.innerHTML = `
       <div class="flex justify-between items-start mb-2">
-        <span class="font-medium text-white">${note.author}</span>
-        <span class="text-white opacity-75 text-sm">${new Date(
+        <span class="font-medium text-primary">${note.author}</span>
+        <span class="text-muted text-sm">${new Date(
           note.timestamp
         ).toLocaleDateString()}</span>
       </div>
-      <p class="text-white">${note.text}</p>
-      <button onclick="deleteNote(${index})" class="mt-2 text-red-300 hover:text-red-200 text-sm">
+      <p class="text-primary">${note.text}</p>
+      <button onclick="deleteNote(${index})" class="mt-2 text-red-600 hover:text-red-800 text-sm">
         Удалить
       </button>
     `;
@@ -527,17 +590,17 @@ function showLocationDetails(dayNum, locationName) {
     <div class="space-y-4">
       <div class="flex items-center space-x-2">
         <span class="text-lg">${getLocationTypeEmoji(location.type)}</span>
-        <span class="text-white opacity-75">${location.time}</span>
+        <span class="text-muted">${location.time}</span>
       </div>
       
-      <p class="text-white">${location.description}</p>
+      <p class="text-primary">${location.description}</p>
       
       ${
         location.notes
           ? `
-        <div class="bg-yellow-500 bg-opacity-20 rounded-lg p-3">
-          <h4 class="font-semibold text-yellow-200 mb-1">💡 Важные заметки:</h4>
-          <p class="text-yellow-100">${location.notes}</p>
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <h4 class="font-semibold text-amber-800 mb-1">💡 Важные заметки:</h4>
+          <p class="text-amber-700">${location.notes}</p>
         </div>
       `
           : ""
@@ -548,14 +611,14 @@ function showLocationDetails(dayNum, locationName) {
           location.maps
             ? `
           <a href="${location.maps}" target="_blank" 
-             class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+             class="btn">
             🗺️ Открыть на карте
           </a>
         `
             : ""
         }
         <button onclick="addLocationNote('${dayNum}', '${locationName}')" 
-                class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                class="btn-secondary">
           💭 Добавить заметку
         </button>
       </div>

@@ -4,8 +4,8 @@
   "description": "Интерактивный планировщик путешествия по Норвегии на кемпере",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#667eea",
-  "theme_color": "#667eea",
+  "background_color": "#fafafa",
+  "theme_color": "#3b82f6",
   "orientation": "portrait-primary",
   "icons": [
     {
