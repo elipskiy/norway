@@ -157,6 +157,18 @@ body {
   transform: translateX(2px);
 }
 
+.location-item.hidden-gem {
+  /* background: linear-gradient(135deg, #faf5ff, #f3e8ff); */
+  /* border: 1px solid #d8b4fe; */
+  /* border-left: 4px solid #8b5cf6; */
+}
+
+.location-item.hidden-gem:hover {
+  background: linear-gradient(135deg, #f3e8ff, #ede9fe);
+  border-color: #c084fc;
+  transform: translateX(4px);
+}
+
 .location-icon {
   width: 24px;
   height: 24px;
@@ -196,6 +208,12 @@ body {
 .location-icon.optional {
   background: #f1f5f9;
   color: #475569;
+}
+.location-icon.hidden_gem {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: white;
+  border: 2px solid #a855f7;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
 }
 
 .location-details {

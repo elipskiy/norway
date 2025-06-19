@@ -28,6 +28,36 @@ const tripData = {
             "Запастись на 2-3 дня; норвежские кроны пригодятся на платных дорогах",
         },
         {
+          name: "🥩 Annis Pölsemakeri (по пути)",
+          time: "опционально",
+          description:
+            "Семейная мясная лавка в Рингебу — колбасы и стейки ручной работы",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Annis+P%C3%B6lsemakeri+Ringebu",
+          notes:
+            "Деликатесы для гриля, кафе Annis Spisested. Удобная парковка для кемпера",
+        },
+        {
+          name: "🧑‍🌾 Aabrekk Gard (по пути)",
+          time: "опционально",
+          description:
+            "Историческая ферма в долине Олдендален — традиционная норвежская кухня",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Aabrekk+Gard+Oldendalen",
+          notes:
+            "Живая культура seterkultur. Открыто 12-18, бесплатная парковка",
+        },
+        {
+          name: "🏞️ Kjenndalstova (детур)",
+          time: "опционально",
+          description:
+            "Красный домик у озера Ловватнет — свежая форель с видом на ледник",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Kjenndalstova+Lovatnet",
+          notes:
+            "Узкая платная дорога (наличные). Уединенный ужин вдали от толпы",
+        },
+        {
           name: "Lo-Vik Camping",
           time: "21:30",
           description: "Кемпинг прямо у фьорда в Лоэне",
@@ -74,6 +104,14 @@ const tripData = {
           notes: "~200 NOK, возможна очередь до 40 мин",
         },
         {
+          name: "🍎 Lingebakken Gardsutsalg (по пути)",
+          time: "опционально",
+          description: "Фермерский магазин сидра — дегустация и свежие фрукты",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Lingebakken+Gardsutsalg",
+          notes: "Домашний сидр и сезонные фрукты. Открыто 9-17",
+        },
+        {
           name: "Valldal Camping",
           time: "17:30",
           description: "Кемпинг в 'клубничной столице' Норвегии",
@@ -81,6 +119,14 @@ const tripData = {
           maps: "https://maps.google.com/?q=Valldal+Camping",
           notes:
             "Успеете в Jordbærstova ( https://maps.google.com/?q=Jordbærstova+Valldal ) если до 17:00",
+        },
+        {
+          name: "🍓 Jordbærstova (вечером)",
+          time: "опционально",
+          description: "Легендарное кафе — лучший клубничный торт в Норвегии",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Jordbærstova+Valldal",
+          notes: "Главная цель в 'клубничной столице'. Бесплатная парковка",
         },
       ],
     },
@@ -105,6 +151,16 @@ const tripData = {
             "Участок со стороны Åndalsnes открыт с 14 июля; спускаемся обратно тем же путём",
         },
         {
+          name: "🚶 Тропа Kløvstien (альтернатива)",
+          time: "опционально",
+          description:
+            "Секретная вьючная тропа — виды на Trollstigen без толпы",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Kl%C3%B8vstien+Trollstigen",
+          notes:
+            "Начало от визит-центра. Уникальные виды, недоступные с основных площадок",
+        },
+        {
           name: "Romsdalsgondolen",
           time: "10:45-12:00",
           description: "Канатка 708 м, панорама 360° на Trollveggen и Romsdal",
@@ -122,6 +178,15 @@ const tripData = {
           notes: "Иногда видны альпинисты",
         },
         {
+          name: "🦀 Bjartmars Favorittkro (обед)",
+          time: "опционально",
+          description:
+            "Ресторан у Атлантической дороги — отмеченный наградами бакалао",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Bjartmars+Favorittkro",
+          notes: "Кулинарная жемчужина с разумными ценами. Удобная парковка",
+        },
+        {
           name: "Atlantic Road (Atlanterhavsvegen)",
           time: "15:30-18:00",
           description:
@@ -129,6 +194,15 @@ const tripData = {
           type: "sightseeing",
           maps: "https://maps.google.com/?q=Atlanterhavsveien",
           notes: "Заглянуть в Kvernes Stave Church по дороге (11-17)",
+        },
+        {
+          name: "🐟 Деревня Буд (детур)",
+          time: "опционально",
+          description:
+            "Рыбацкая деревня — густой сливочный рыбный суп в Bryggjen i Bud",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Bryggjen+i+Bud",
+          notes: "Атмосфера настоящей рыбацкой деревни. Большая парковка",
         },
         {
           name: "Atlanterhavsveien Camping",
@@ -158,6 +232,26 @@ const tripData = {
           type: "sightseeing",
           maps: "https://maps.google.com/?q=Aksla+viewpoint+%C3%85lesund",
           notes: "Обед на рыбном рынке Brogata",
+        },
+        {
+          name: "🏙️ Прогулка по Ålesund (альтернатива)",
+          time: "опционально",
+          description:
+            "Маршрут местных: кофе в Racoon, Apotekergata 5, бар Trankokeriet",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Racoon+Coffee+%C3%85lesund",
+          notes:
+            "Душа города, не только фасады. Парковка Hjelsetgården Bobilparkering",
+        },
+        {
+          name: "🚤 Kami Skotholmen (экстрим)",
+          time: "опционально",
+          description:
+            "Ресторан морепродуктов на удаленном острове — катер из Fosnavåg",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Fosnavag+harbor",
+          notes:
+            "Требует бронирования (booking@skotholmen.no). Ужин-приключение",
         },
         {
           name: "Runde Camping",
@@ -196,6 +290,15 @@ const tripData = {
           notes: "Если рейса нет — ехать через Ørsta (+55 км)",
         },
         {
+          name: "🦅 Hjørundfjord (альтернатива Гейрангеру)",
+          time: "опционально",
+          description:
+            "Дикий фьорд — Urke Kaihus (вафли) или Rekkedal Gjestegard",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Urke+Kaihus",
+          notes: "Более аутентичная альтернатива Гейрангеру. Тишина и покой",
+        },
+        {
           name: "Hotel Union Øye",
           time: "11:15-12:00",
           description: "Исторический отель 1891 г.; кофе с видом на фьорд",
@@ -218,6 +321,25 @@ const tripData = {
           type: "sightseeing",
           maps: "https://maps.google.com/?q=Dalsnibba+Skywalk",
           notes: "260 NOK за авто; не ехать в туман",
+        },
+        {
+          name: "🐐 Westerås Gard (ужин с видом)",
+          time: "опционально",
+          description:
+            "Ферма-ресторан на уступе над Гейрангером — ламы, козы, лучшие виды",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Wester%C3%A5s+Gard+Geiranger",
+          notes:
+            "Узкий серпантин. Требует бронирования. Над туристической суетой",
+        },
+        {
+          name: "✨ Пикник на Dalsnibba (закат)",
+          time: "опционально",
+          description: "Закатный пикник на 1500м с купленными деликатесами",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Dalsnibba+Skywalk",
+          notes:
+            "Когда автобусы уехали — бесценный момент восхищения. Свобода кемпера!",
         },
         {
           name: "Geiranger Camping",
@@ -248,12 +370,31 @@ const tripData = {
           notes: "Вход 100 NOK; стойка выпечки легендарна",
         },
         {
+          name: "🥐 Bakeriet i Lom (альтернатива)",
+          time: "опционально",
+          description:
+            "Легендарная пекарня с дровяной печью — лучшие kanelsnurrer в Норвегии",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Bakeriet+i+Lom",
+          notes:
+            "Оставить кемпер в Lom Camping, дойти пешком 10 мин. Нет своей парковки",
+        },
+        {
           name: "Lillehammer Camping",
           time: "17:00",
           description: "Кемпинг у озера Mjøsa, рядом олимпийские трамплины",
           type: "accommodation",
           maps: "https://maps.google.com/?q=Lillehammer+Camping",
           notes: "Вечером пройтись к Lysgårdsbakken",
+        },
+        {
+          name: "☕ Atelier Cocoa / Cafe Sorgenfri (вечер)",
+          time: "опционально",
+          description:
+            "Нетуристические кафе — горячий шоколад и норвежский уют (kos)",
+          type: "hidden_gem",
+          maps: "https://maps.google.com/?q=Atelier+Cocoa+Lillehammer",
+          notes: "Завершение путешествия на душевной ноте. Городская парковка",
         },
       ],
     },
@@ -382,6 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
   renderChecklist();
   renderBudget();
   renderNotes();
+  renderHiddenGems();
   showSection("itinerary");
 
   // Add loading animation
@@ -444,9 +586,9 @@ function renderItinerary() {
         ${day.locations
           .map(
             (location) => `
-          <div class="location-item" onclick="showLocationDetails('${
-            day.day
-          }', '${location.name}')">
+          <div class="location-item ${
+            location.type === "hidden_gem" ? "hidden-gem" : ""
+          }" onclick="showLocationDetails('${day.day}', '${location.name}')">
             <div class="location-icon ${location.type}">
               ${getLocationTypeEmoji(location.type)}
             </div>
@@ -579,6 +721,78 @@ function renderNotes() {
     `;
     container.appendChild(noteDiv);
   });
+}
+
+function renderHiddenGems() {
+  const container = document.getElementById("hidden-gems-container");
+  container.innerHTML = "";
+
+  tripData.days.forEach((day) => {
+    const hiddenGems = day.locations.filter((loc) => loc.type === "hidden_gem");
+
+    if (hiddenGems.length > 0) {
+      const daySection = document.createElement("div");
+      daySection.className = "bg-white border border-gray-200 rounded-lg p-6";
+
+      daySection.innerHTML = `
+        <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-800 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">
+            ${day.day}
+          </span>
+          День ${day.day}: ${day.title}
+        </h3>
+        <div class="space-y-4">
+          ${hiddenGems
+            .map(
+              (gem) => `
+            <div class="location-item hidden-gem cursor-pointer" onclick="showLocationDetails('${
+              day.day
+            }', '${gem.name}')">
+              <div class="location-icon ${gem.type}">
+                ${getLocationTypeEmoji(gem.type)}
+              </div>
+              <div class="location-details">
+                <div class="location-name">${gem.name}</div>
+                <div class="location-time">${gem.time}</div>
+                <div class="location-description">${gem.description}</div>
+                ${
+                  gem.notes
+                    ? `<div class="location-notes">💡 ${gem.notes}</div>`
+                    : ""
+                }
+              </div>
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+      `;
+
+      container.appendChild(daySection);
+    }
+  });
+
+  // Add summary at the end
+  const totalHiddenGems = tripData.days.reduce(
+    (total, day) =>
+      total + day.locations.filter((loc) => loc.type === "hidden_gem").length,
+    0
+  );
+
+  if (totalHiddenGems > 0) {
+    const summaryDiv = document.createElement("div");
+    summaryDiv.className =
+      "bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6 text-center";
+    summaryDiv.innerHTML = `
+      <h3 class="text-lg font-semibold text-purple-800 mb-2">
+        ✨ Всего найдено ${totalHiddenGems} тайных мест
+      </h3>
+      <p class="text-purple-600 text-sm">
+        Эти места помогут вам погрузиться в аутентичную норвежскую культуру и избежать туристических толп
+      </p>
+    `;
+    container.appendChild(summaryDiv);
+  }
 }
 
 function showLocationDetails(dayNum, locationName) {
@@ -716,6 +930,7 @@ function getLocationTypeEmoji(type) {
     sightseeing: "🏔️",
     transport: "⛴️",
     optional: "⭐",
+    hidden_gem: "💎",
   };
   return emojis[type] || "📍";
 }

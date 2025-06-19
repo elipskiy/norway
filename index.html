@@ -117,6 +117,9 @@
         <button onclick="showSection('budget')" class="nav-btn">
           💰 Бюджет
         </button>
+        <button onclick="showSection('hidden-gems')" class="nav-btn">
+          💎 Тайные места
+        </button>
       </div>
 
       <!-- Itinerary Section -->
@@ -177,6 +180,22 @@
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Budget items will be here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Hidden Gems Section -->
+      <section id="hidden-gems" class="section hidden">
+        <div class="glass rounded-2xl p-6 mb-6">
+          <h2 class="text-2xl font-bold text-primary mb-4">
+            💎 Тайные сокровища Норвегии
+          </h2>
+          <p class="text-secondary mb-6 text-center">
+            Скрытые жемчужины и аутентичные места, известные только местным
+            жителям
+          </p>
+          <div id="hidden-gems-container" class="space-y-6">
+            <!-- Hidden gems will be rendered here -->
           </div>
         </div>
       </section>
