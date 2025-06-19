@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Тест - Norway Trip Planner</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+      }
+      .test-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .success {
+        border-left: 4px solid #10b981;
+      }
+      .error {
+        border-left: 4px solid #ef4444;
+      }
+      .warning {
+        border-left: 4px solid #f59e0b;
+      }
+      button {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      button:hover {
+        background: #2563eb;
+      }
+      .file-list {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+      .file-list ul {
+        list-style: none;
+        padding: 0;
+      }
+      .file-list li {
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .file-list li:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🧪 Тест Norway Trip Planner</h1>
+
+    <div class="test-item success">
+      <h3>✅ Файлы проекта</h3>
+      <div class="file-list">
+        <ul>
+          <li>📄 index.html - Главная страница</li>
+          <li>🎨 styles.css - Стили</li>
+          <li>⚡ script.js - JavaScript логика</li>
+          <li>📖 README.md - Документация</li>
+          <li>🚀 DEPLOY.md - Инструкции по деплою</li>
+          <li>🔧 .gitignore - Git ignore файл</li>
+          <li>📱 manifest.json - PWA манифест</li>
+          <li>⚙️ sw.js - Service Worker</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="test-item">
+      <h3>🔗 Тестирование ссылок</h3>
+      <button onclick="testMainPage()">Открыть главную страницу</button>
+      <button onclick="testLocalStorage()">Тест LocalStorage</button>
+      <button onclick="testResponsive()">Тест адаптивности</button>
+      <button onclick="clearTestData()">Очистить тестовые данные</button>
+    </div>
+
+    <div class="test-item">
+      <h3>📱 PWA тест</h3>
+      <div id="pwa-status">Проверка...</div>
+      <button onclick="testPWA()">Проверить PWA</button>
+    </div>
+
+    <div class="test-item">
+      <h3>🎯 Следующие шаги</h3>
+      <ol>
+        <li>Создайте репозиторий на GitHub</li>
+        <li>Загрузите все файлы в репозиторий</li>
+        <li>Включите GitHub Pages в настройках</li>
+        <li>Обновите ссылки в файлах (замените yourusername)</li>
+        <li>Поделитесь ссылкой с друзьями!</li>
+      </ol>
+    </div>
+
+    <div class="test-item warning">
+      <h3>⚠️ Важно</h3>
+      <p>
+        Не забудьте заменить <code>yourusername</code> на ваше имя пользователя
+        GitHub в следующих файлах:
+      </p>
+      <ul>
+        <li>index.html (строки с og:url и twitter:url)</li>
+        <li>README.md (ссылка на Live Demo)</li>
+      </ul>
+    </div>
+
+    <script>
+      function testMainPage() {
+        window.open("index.html", "_blank");
+      }
+
+      function testLocalStorage() {
+        try {
+          localStorage.setItem("test", "Norway Trip Test");
+          const testValue = localStorage.getItem("test");
+          localStorage.removeItem("test");
+
+          if (testValue === "Norway Trip Test") {
+            alert("✅ LocalStorage работает корректно!");
+          } else {
+            alert("❌ LocalStorage не работает");
+          }
+        } catch (e) {
+          alert("❌ LocalStorage недоступен: " + e.message);
+        }
+      }
+
+      function testResponsive() {
+        const width = window.innerWidth;
+        let device = "";
+
+        if (width < 768) device = "📱 Мобильное устройство";
+        else if (width < 1024) device = "📱 Планшет";
+        else device = "💻 Десктоп";
+
+        alert(`Текущий размер экрана: ${width}px\n${device}`);
+      }
+
+      function clearTestData() {
+        if (confirm("Очистить все данные приложения?")) {
+          localStorage.clear();
+          alert("✅ Все данные очищены!");
+        }
+      }
+
+      function testPWA() {
+        const pwaStatus = document.getElementById("pwa-status");
+
+        // Проверка Service Worker
+        if ("serviceWorker" in navigator) {
+          pwaStatus.innerHTML = "✅ Service Worker поддерживается";
+        } else {
+          pwaStatus.innerHTML = "❌ Service Worker не поддерживается";
+        }
+
+        // Проверка манифеста
+        fetch("manifest.json")
+          .then((response) => response.json())
+          .then((data) => {
+            pwaStatus.innerHTML += "<br>✅ manifest.json загружен";
+          })
+          .catch((error) => {
+            pwaStatus.innerHTML += "<br>❌ manifest.json не найден";
+          });
+      }
+
+      // Автоматический тест при загрузке
+      window.addEventListener("load", function () {
+        testPWA();
+      });
+    </script>
+  </body>
+</html>
