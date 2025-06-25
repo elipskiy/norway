@@ -4,7 +4,7 @@
 
 ## 🚀 Live Demo
 
-**[Открыть планировщик](https://yourusername.github.io/norway-trip/)**
+**[Открыть планировщик](https://elipskiy.github.io/norway/)**
 
 ## ⚙️ Настройка
 
@@ -29,6 +29,23 @@
    ```
 
 4. **Файл config.js уже добавлен в .gitignore** и не будет попадать в репозиторий
+
+### Настройка GitHub Pages:
+
+Для работы интерактивной карты на GitHub Pages:
+
+1. **Перейдите в Settings репозитория → Secrets and variables → Actions**
+
+2. **Добавьте новый Repository Secret:**
+   - Name: `GOOGLE_MAPS_API_KEY`
+   - Value: ваш Google Maps API ключ
+
+3. **Включите GitHub Pages:**
+   - Settings → Pages
+   - Source: Deploy from a branch
+   - Branch: gh-pages
+
+4. **GitHub Actions автоматически создаст config.js** с вашим API ключом при деплое
 
 ## ✨ Особенности
 

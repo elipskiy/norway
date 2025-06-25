@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Create config.js for GitHub Pages
+      run: |
+        cat > config.js << 'EOF'
+        // Конфигурационный файл для GitHub Pages
+        // API ключ должен быть настроен как GitHub Secret
+        
+        const CONFIG = {
+          GOOGLE_MAPS_API_KEY: '${{ secrets.GOOGLE_MAPS_API_KEY }}'
+        };
+        
+        // Экспорт для использования в других файлах
+        if (typeof module !== 'undefined' && module.exports) {
+          module.exports = CONFIG;
+        } else {
+          window.CONFIG = CONFIG;
+        }
+        EOF
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        exclude_assets: '.github,node_modules,*.md'
