@@ -2,7 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,39 +20,39 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Create config.js for GitHub Pages
-      run: |
-        cat > config.js << 'EOF'
-        // Конфигурационный файл для GitHub Pages
-        // API ключ должен быть настроен как GitHub Secret
-        
-        const CONFIG = {
-          GOOGLE_MAPS_API_KEY: '${{ secrets.GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY_HERE' }}'
-        };
-        
-        // Экспорт для использования в других файлах
-        if (typeof module !== 'undefined' && module.exports) {
-          module.exports = CONFIG;
-        } else {
-          window.CONFIG = CONFIG;
-        }
-        EOF
-        echo "Created config.js with API key"
-        head -5 config.js
-    
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-      
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: '.'
-        
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create config.js for GitHub Pages
+        run: |
+          cat > config.js << 'EOF'
+          // Конфигурационный файл для GitHub Pages
+          // API ключ должен быть настроен как GitHub Secret
+
+          const CONFIG = {
+            GOOGLE_MAPS_API_KEY: '${{ secrets.GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY_HERE' }}'
+          };
+
+          // Экспорт для использования в других файлах
+          if (typeof module !== 'undefined' && module.exports) {
+            module.exports = CONFIG;
+          } else {
+            window.CONFIG = CONFIG;
+          }
+          EOF
+          echo "Created config.js with API key"
+          head -5 config.js
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

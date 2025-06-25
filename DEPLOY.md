@@ -1,181 +1,108 @@
-# 🚀 Инструкции по деплою на GitHub Pages
+# 🚀 Deployment Instructions for GitHub Pages
 
-## Быстрый старт
+## Quick Setup
 
-### 1. Создание репозитория на GitHub
+### 1. Repository Setup
 
-1. Перейдите на [GitHub](https://github.com)
-2. Нажмите "New repository"
-3. Назовите репозиторий `norway-trip`
-4. Сделайте его публичным
-5. НЕ инициализируйте с README (мы уже создали его)
+This repository is already configured with automated deployment using GitHub Actions.
 
-### 2. Загрузка файлов
+### 2. Configure API Keys
 
-#### Вариант A: Через веб-интерфейс GitHub
+**Important:** Add your Google Maps API key as a GitHub secret:
 
-1. В созданном репозитории нажмите "uploading an existing file"
-2. Перетащите все файлы проекта:
-   - `index.html`
-   - `styles.css`
-   - `script.js`
-   - `README.md`
-   - `.gitignore`
-   - `sw.js`
-   - `manifest.json`
-   - `DEPLOY.md`
-3. Добавьте коммит "Initial commit"
-4. Нажмите "Commit changes"
+1. Go to repository: https://github.com/elipskiy/norway
+2. Navigate to **Settings** → **Secrets and variables** → **Actions**
+3. Click **New repository secret**
+4. Name: `GOOGLE_MAPS_API_KEY`
+5. Value: ``
 
-#### Вариант B: Через Git (рекомендуется)
+### 3. Enable GitHub Pages
+
+1. Go to **Settings** → **Pages**
+2. Under **Source**, select **GitHub Actions** (NOT "Deploy from a branch")
+3. Save settings
+
+### 4. Deploy the Application
+
+#### Option A: Automatic Deployment
+
+- Push any changes to the `main` branch
+- GitHub Actions will automatically build and deploy
+
+#### Option B: Manual Deployment
+
+1. Go to **Actions** tab in your repository
+2. Find "Deploy to GitHub Pages" workflow
+3. Click **Run workflow** button
+4. Select `main` branch and click **Run workflow**
+
+### 5. Access Your Site
+
+After deployment completes, your site will be available at:
+**https://elipskiy.github.io/norway-trip/**
+
+## 🔧 How It Works
+
+The deployment process:
+
+1. Automatically creates `config.js` with your API key
+2. Builds the application
+3. Deploys to GitHub Pages
+4. Site is ready to use!
+
+## 🔄 Updates
+
+To update your site:
+
+1. Make changes to your code
+2. Push to `main` branch
+3. GitHub Actions automatically redeploys
 
 ```bash
-# Клонируйте репозиторий
-git clone https://github.com/yourusername/norway-trip.git
-cd norway-trip
-
-# Скопируйте все файлы проекта в папку
-# (скопируйте index.html, styles.css, script.js и т.д.)
-
-# Добавьте файлы в Git
 git add .
-
-# Создайте коммит
-git commit -m "Initial commit: Norway Trip Planner"
-
-# Отправьте на GitHub
+git commit -m "Update: description of changes"
 git push origin main
 ```
 
-### 3. Настройка GitHub Pages
+## 📱 Testing
 
-1. В репозитории перейдите в **Settings**
-2. Прокрутите вниз до секции **Pages**
-3. В **Source** выберите **Deploy from a branch**
-4. В **Branch** выберите **main** и папку **/ (root)**
-5. Нажмите **Save**
-
-### 4. Обновление ссылок
-
-После деплоя обновите ссылки в файлах:
-
-#### В `index.html`:
-
-```html
-<!-- Замените yourusername на ваше имя пользователя -->
-<meta property="og:url" content="https://yourusername.github.io/norway-trip/" />
-<meta
-  property="twitter:url"
-  content="https://yourusername.github.io/norway-trip/"
-/>
-```
-
-#### В `README.md`:
-
-```markdown
-**[Открыть планировщик](https://yourusername.github.io/norway-trip/)**
-```
-
-### 5. Проверка
-
-Через несколько минут ваш сайт будет доступен по адресу:
-`https://yourusername.github.io/norway-trip/`
-
-## 🔧 Дополнительные настройки
-
-### Кастомный домен (опционально)
-
-1. В настройках Pages добавьте ваш домен
-2. Создайте CNAME файл в корне репозитория
-3. Добавьте ваш домен в CNAME файл
-
-### HTTPS
-
-GitHub Pages автоматически предоставляет SSL сертификат
-
-### Кэширование
-
-Service Worker автоматически кэширует ресурсы для офлайн работы
-
-## 🐛 Устранение проблем
-
-### Сайт не загружается
-
-- Проверьте, что все файлы загружены в корень репозитория
-- Убедитесь, что GitHub Pages включен в настройках
-- Подождите 5-10 минут после первого деплоя
-
-### Стили не применяются
-
-- Проверьте, что `styles.css` находится в корне
-- Убедитесь, что путь в `index.html` правильный
-
-### JavaScript не работает
-
-- Проверьте консоль браузера на ошибки
-- Убедитесь, что `script.js` загружен
-
-### PWA не работает
-
-- Проверьте, что `manifest.json` и `sw.js` загружены
-- Убедитесь, что сайт работает по HTTPS
-
-## 📱 Тестирование
-
-### Локальное тестирование
+### Local Testing
 
 ```bash
-# Запустите локальный сервер
+# Start local server
 python -m http.server 8000
-# или
+# or
 npx serve .
 
-# Откройте http://localhost:8000
+# Open http://localhost:8000
 ```
 
-### Мобильное тестирование
+### Mobile Testing
 
-- Откройте сайт на мобильном устройстве
-- Проверьте адаптивность
-- Протестируйте PWA установку
+- Open site on mobile device
+- Test responsive design
+- Test PWA installation
 
-## 🔄 Обновления
+## 🐛 Troubleshooting
 
-Для обновления сайта:
+### Workflow doesn't run
 
-1. Измените файлы локально
-2. Загрузите изменения на GitHub
-3. GitHub Pages автоматически обновится
+- Check that API key is set as repository secret
+- Verify GitHub Pages is set to "GitHub Actions" source
+- Check Actions tab for error messages
 
-```bash
-git add .
-git commit -m "Update: описание изменений"
-git push origin main
-```
+### Site doesn't load
 
-## 📊 Аналитика (опционально)
+- Wait 5-10 minutes after first deployment
+- Check that all files are in repository root
+- Verify HTTPS is working
 
-Добавьте Google Analytics:
+### Maps don't work
 
-1. Создайте аккаунт в Google Analytics
-2. Добавьте код отслеживания в `index.html`
-
-```html
-<!-- Google Analytics -->
-<script
-  async
-  src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
-></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-  gtag("config", "GA_MEASUREMENT_ID");
-</script>
-```
+- Verify API key is correctly set in repository secrets
+- Check browser console for errors
+- Ensure API key has proper permissions
 
 ---
 
-**Удачи с деплоем! 🚀**
+**Happy deploying! 🚀**
