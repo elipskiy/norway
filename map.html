@@ -608,7 +608,8 @@
       <div id="map"></div>
     </div>
 
-    <script src="config.js"></script>
+    <script src="config.js" onerror="console.warn('config.js не найден, используется fallback')"></script>
+    <script src="config-fallback.js"></script>
     <script src="script.js"></script>
     <script>
       let map;
