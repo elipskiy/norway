@@ -968,7 +968,7 @@
         }
       }
 
-      function buildSingleDrivingRoute(waypoints) {
+      function buildSingleDrivingRoute(waypoints, isSegment = false) {
         const start = waypoints[0];
         const end = waypoints[waypoints.length - 1];
         const intermediateWaypoints = waypoints.slice(1, -1).map((point) => ({
@@ -988,6 +988,7 @@
           if (status === "OK") {
             const directionsRenderer = new google.maps.DirectionsRenderer({
               suppressMarkers: true, // We have our own markers
+              preserveViewport: true,
               polylineOptions: {
                 strokeColor: "#3B82F6",
                 strokeOpacity: 0.8,
@@ -1012,10 +1013,14 @@
             console.log("Failed waypoints:", waypoints);
 
             // Try alternative strategies based on error type
-            if (status === "ZERO_RESULTS" && waypoints.length > 3) {
+            if (
+              !isSegment &&
+              status === "ZERO_RESULTS" &&
+              waypoints.length > 3
+            ) {
               console.log("Trying segmented approach due to ZERO_RESULTS");
               buildSegmentedDrivingRoute(waypoints);
-            } else if (status === "MAX_WAYPOINTS_EXCEEDED") {
+            } else if (!isSegment && status === "MAX_WAYPOINTS_EXCEEDED") {
               console.log(
                 "Forcing segmented approach due to too many waypoints"
               );
@@ -1031,14 +1036,14 @@
       function buildSegmentedDrivingRoute(waypoints) {
         const MAX_SEGMENT_SIZE = 8; // Smaller segments for better reliability
 
-        for (let i = 0; i < waypoints.length - 1; i += MAX_SEGMENT_SIZE - 1) {
-          const segmentEnd = Math.min(i + MAX_SEGMENT_SIZE, waypoints.length);
-          const segmentWaypoints = waypoints.slice(i, segmentEnd);
+          for (let i = 0; i < waypoints.length - 1; i += MAX_SEGMENT_SIZE - 1) {
+            const segmentEnd = Math.min(i + MAX_SEGMENT_SIZE, waypoints.length);
+            const segmentWaypoints = waypoints.slice(i, segmentEnd);
 
-          if (segmentWaypoints.length >= 2) {
-            buildSingleDrivingRoute(segmentWaypoints);
+            if (segmentWaypoints.length >= 2) {
+              buildSingleDrivingRoute(segmentWaypoints, true);
+            }
           }
-        }
       }
 
       function buildFallbackRoute(waypoints) {
@@ -1138,6 +1143,7 @@
             if (status === "OK") {
               const directionsRenderer = new google.maps.DirectionsRenderer({
                 suppressMarkers: true, // We have our own markers
+                preserveViewport: true,
                 polylineOptions: {
                   strokeColor: gemType === "hidden_gem" ? "#EC4899" : "#F97316",
                   strokeOpacity: 0.6,
