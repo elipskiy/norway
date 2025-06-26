@@ -1,0 +1,19 @@
+{
+  "name": "norway-trip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "axios-retry": "^4.5.0",
+    "cli-progress": "^3.12.0",
+    "sharp": "^0.34.2",
+    "yargs": "^18.0.0"
+  }
+}

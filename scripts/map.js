@@ -206,6 +206,20 @@ function addLocationMarker(location, dayNum) {
     marker._pulseInterval = pulseInterval;
   }
 
+  // Create photo HTML if photo exists
+  const photoHtml = location.photo ? `
+    <div style="margin-bottom: 12px; text-align: center;">
+      <img src="${location.photo}" 
+           alt="${location.name} landscape view"
+           style="width: 100%; max-width: 280px; height: 160px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer;"
+           onerror="console.error('Ошибка загрузки фото: ${location.photo}'); this.style.display='none'"
+           onload="console.log('Фото загружено: ${location.photo}')"
+           onclick="window.open('${location.photo}', '_blank')"
+           title="Нажмите для полного размера">
+      <div style="font-size: 11px; color: #6b7280; margin-top: 4px; font-style: italic;">📸 Кликните для увеличения</div>
+    </div>
+  ` : '';
+
   const contentString = `
     <div style="max-width: 300px; padding: 12px; font-family: system-ui, sans-serif;">
 <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold; color: #1f2937;">${emoji} ${
@@ -214,6 +228,7 @@ function addLocationMarker(location, dayNum) {
 <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 13px; font-weight: 500;">День ${dayNum} • ${
     location.time
   }</p>
+${photoHtml}
 <p style="margin: 0 0 12px 0; font-size: 13px; line-height: 1.4; color: #374151;">${
     location.description
   }</p>

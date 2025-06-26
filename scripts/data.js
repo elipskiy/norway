@@ -60,6 +60,7 @@ export const tripData = {
           coordinates: [61.779667, 7.010478], // ← fixed
           notes:
             "Узкая платная дорога (наличные). Уединенный ужин вдали от толпы",
+          photo: "images/landscapes/kjenndalstova-glacier-view.jpg",
         },
         {
           name: "Lo-Vik Camping",
@@ -100,6 +101,7 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Lygnstøylvatnet",
           coordinates: [62.174722, 6.729167],
           notes: "Фантастические фото сквозь прозрачную воду",
+          photo: "images/landscapes/norangsdalen-submerged-village.jpg",
         },
         {
           name: "Паром Eidsdal → Linge",
@@ -159,6 +161,7 @@ export const tripData = {
           coordinates: [62.4566, 7.6719],
           notes:
             "Участок со стороны Åndalsnes открыт с 14 июля; спускаемся обратно тем же путём",
+          photo: "images/landscapes/trollstigen-serpentine-road.jpg",
         },
         {
           name: "🚶 Тропа Kløvstien (альтернатива)",
@@ -209,6 +212,7 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Atlanterhavsveien",
           coordinates: [63.01674, 7.35431],
           notes: "Заглянуть в Kvernes Stave Church по дороге (11-17)",
+          photo: "images/landscapes/atlantic-road-storseisundet-bridge.jpg",
         },
         {
           name: "🐟 Деревня Буд (детур)",
@@ -348,6 +352,7 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Dalsnibba+Skywalk",
           coordinates: [62.05, 7.28],
           notes: "260 NOK за авто; не ехать в туман",
+          photo: "images/landscapes/dalsnibba-geirangerfjord-panorama.jpg",
         },
         {
           name: "🐐 Westerås Gard (ужин с видом)",

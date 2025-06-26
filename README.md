@@ -11,20 +11,23 @@
 ### Для работы интерактивной карты требуется Google Maps API ключ:
 
 1. **Скопируйте конфигурационный файл:**
+
    ```bash
    cp config.example.js config.js
    ```
 
 2. **Получите Google Maps API ключ:**
+
    - Перейдите в [Google Cloud Console](https://console.developers.google.com/)
    - Создайте новый проект или выберите существующий
    - Включите Maps JavaScript API
    - Создайте API ключ и ограничьте его использование
 
 3. **Добавьте ключ в config.js:**
+
    ```javascript
    const CONFIG = {
-     GOOGLE_MAPS_API_KEY: 'ваш_реальный_ключ_здесь'
+     GOOGLE_MAPS_API_KEY: "ваш_реальный_ключ_здесь",
    };
    ```
 
@@ -37,10 +40,12 @@
 1. **Перейдите в Settings репозитория → Secrets and variables → Actions**
 
 2. **Добавьте новый Repository Secret:**
+
    - Name: `GOOGLE_MAPS_API_KEY`
    - Value: ваш Google Maps API ключ
 
 3. **Включите GitHub Pages:**
+
    - Settings → Pages
    - Source: Deploy from a branch
    - Branch: gh-pages
@@ -239,3 +244,108 @@ const budgetData = [
 ---
 
 **Создано с ❤️ для путешественников** 🇳🇴
+
+# Norway Trip Photo Downloader
+
+Multi-provider photo downloader for Norwegian landscapes with CLI interface and HTML gallery generation.
+
+## Features
+
+- **Multi-provider support**: Pixabay, Unsplash, Pexels
+- **CLI interface** with progress bar
+- **HTML gallery generation** with filters
+- **Multiple image sizes** (large, medium, small, thumb)
+- **Dry run mode** for testing
+- **Professional error handling** with retries
+
+## Installation
+
+```bash
+npm install
+```
+
+## Environment Variables
+
+Create a `.env` file or set environment variables:
+
+```bash
+export PIXABAY_API_KEY="your_pixabay_key"
+export UNSPLASH_ACCESS_KEY="your_unsplash_key"
+export PEXELS_API_KEY="your_pexels_key"
+```
+
+## Usage
+
+```bash
+# Download 20 photos per location from all providers
+node download-photos.js
+
+# Download 10 photos per location from specific providers
+node download-photos.js --count 10 --providers pixabay,unsplash
+
+# Dry run to test without downloading
+node download-photos.js --dry-run
+
+# Skip gallery generation
+node download-photos.js --no-gallery
+```
+
+## CLI Options
+
+- `--count, -c`: Photos per location (default: 20)
+- `--providers, -p`: Comma-separated providers (default: "pixabay,unsplash,pexels")
+- `--dry-run`: Simulate without downloading
+- `--gallery`: Generate HTML gallery (default: true)
+- `--help`: Show help
+
+## Output Structure
+
+```
+images/
+├── landscapes/           # Main photos (one per location)
+│   ├── location1.jpg
+│   └── location2.jpg
+├── inspiration/          # Multiple variants by category
+│   ├── fjord/
+│   │   ├── location1-v1-large.jpg
+│   │   ├── location1-v1-medium.jpg
+│   │   └── ...
+│   └── mountain/
+├── gallery.html          # Interactive gallery
+└── photo-info.json       # Metadata
+```
+
+## Locations
+
+The script downloads photos for 21 Norwegian locations across categories, covering **ALL key stops from the trip route**:
+
+### 🗺️ **From Trip Route:**
+
+- **Day 1**: Kjenndalstova glacier view
+- **Day 2**: Via Ferrata Loen, Norangsdalen valley
+- **Day 3**: Trollstigen road, Romsdalsgondolen, Trollveggen, Atlantic Road
+- **Day 4**: Ålesund/Aksla, Runde puffins
+- **Day 5**: Hjørundfjord, Hotel Union Øye, Geiranger/Dalsnibba
+- **Day 6**: Lom Stave Church, Lillehammer Olympics
+
+### 📸 **Additional Inspiration:**
+
+- **Fjords**: Geirangerfjord, Hjørundfjord
+- **Mountains**: Trollveggen, Grotli, Loen skylift
+- **Roads**: Trollstigen, Eagle Road, Atlantic Road
+- **Architecture**: Stave churches, historic hotels
+- **Adventure**: Via ferrata climbing
+- **Sports**: Olympic venues
+- **Natural phenomena**: Midnight sun
+- **Cliffs**: Preikestolen
+- **Islands**: Runde (puffins)
+- **Cities**: Ålesund
+- **Valleys**: Norangsdalen
+- **Glaciers**: Kjenndalstova
+
+## AICODE Notes
+
+- **AICODE-NOTE**: CLI interface uses yargs for professional argument parsing
+- Clean class-based architecture separating concerns
+- Error handling with axios-retry for network resilience
+- Progress tracking with cli-progress for better UX

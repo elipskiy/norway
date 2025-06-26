@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(open map.html)"
+      "Bash(open map.html)",
+      "Bash(mkdir:*)",
+      "WebFetch(domain:pixabay.com)",
+      "Bash(rg:*)"
     ],
     "deny": []
   }

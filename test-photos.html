@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Тест фотографий</title>
+</head>
+<body>
+    <h1>Тест отображения фотографий</h1>
+    
+    <h2>Скачанные фотографии:</h2>
+    
+    <div style="margin: 20px;">
+        <h3>Kjenndalstova Glacier View</h3>
+        <img src="images/landscapes/kjenndalstova-glacier-view.jpg" alt="Kjenndalstova" style="max-width: 300px; border: 1px solid #ccc;">
+        <p>Путь: images/landscapes/kjenndalstova-glacier-view.jpg</p>
+    </div>
+    
+    <div style="margin: 20px;">
+        <h3>Dalsnibba Geirangerfjord Panorama</h3>
+        <img src="images/landscapes/dalsnibba-geirangerfjord-panorama.jpg" alt="Dalsnibba" style="max-width: 300px; border: 1px solid #ccc;">
+        <p>Путь: images/landscapes/dalsnibba-geirangerfjord-panorama.jpg</p>
+    </div>
+    
+    <div style="margin: 20px;">
+        <h3>Trollstigen Serpentine Road</h3>
+        <img src="images/landscapes/trollstigen-serpentine-road.jpg" alt="Trollstigen" style="max-width: 300px; border: 1px solid #ccc;">
+        <p>Путь: images/landscapes/trollstigen-serpentine-road.jpg</p>
+    </div>
+    
+    <div style="margin: 20px;">
+        <h3>Atlantic Road Bridge</h3>
+        <img src="images/landscapes/atlantic-road-storseisundet-bridge.jpg" alt="Atlantic Road" style="max-width: 300px; border: 1px solid #ccc;">
+        <p>Путь: images/landscapes/atlantic-road-storseisundet-bridge.jpg</p>
+    </div>
+    
+    <div style="margin: 20px;">
+        <h3>Norangsdalen Submerged Village</h3>
+        <img src="images/landscapes/norangsdalen-submerged-village.jpg" alt="Norangsdalen" style="max-width: 300px; border: 1px solid #ccc;">
+        <p>Путь: images/landscapes/norangsdalen-submerged-village.jpg</p>
+    </div>
+    
+    <script>
+        // Проверим загрузку изображений
+        const images = document.querySelectorAll('img');
+        images.forEach((img, index) => {
+            img.onload = () => {
+                console.log(`✅ Изображение ${index + 1} загружено: ${img.src}`);
+            };
+            img.onerror = () => {
+                console.error(`❌ Ошибка загрузки изображения ${index + 1}: ${img.src}`);
+                img.style.border = '2px solid red';
+                img.alt = 'ОШИБКА ЗАГРУЗКИ: ' + img.alt;
+            };
+        });
+    </script>
+</body>
+</html>
