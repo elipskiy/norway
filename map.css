@@ -369,19 +369,50 @@ body {
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .controls-panel {
-    top: 70px;
+    top: 45px;
     left: 0.5rem;
     right: 0.5rem;
     max-width: none;
-    max-height: 35vh;
+    max-height: 45vh;
+    transition: transform 0.3s ease;
   }
 
   .locations-panel {
-    display: none;
+    top: 45px;
+    left: 0.5rem;
+    right: 0.5rem;
+    max-width: none;
+    max-height: 55vh;
+    transition: transform 0.3s ease;
+  }
+
+  .locations-panel.hidden {
+    transform: translateY(-120%);
+  }
+
+  .controls-panel.hidden {
+    transform: translateY(-120%);
+  }
+
+  .header {
+    padding: 0.3rem 0.5rem !important;
+    min-height: auto !important;
+    height: auto !important;
   }
 
   .header h1 {
-    font-size: 1.25rem;
+    font-size: 0.75rem !important;
+    gap: 0.15rem !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  .header .nav-link {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.7rem !important;
+    border-radius: 3px !important;
+    font-weight: 400 !important;
   }
 
   .day-controls {
@@ -390,6 +421,39 @@ body {
 
   .control-section {
     margin-bottom: 1rem;
+  }
+
+  /* Mobile toggle buttons */
+  .mobile-toggle-bar {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .mobile-toggle-btn {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: #374151;
+  }
+
+  .mobile-toggle-btn:hover,
+  .mobile-toggle-btn.active {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-2px);
   }
 }
 
@@ -429,6 +493,17 @@ body {
 
 @media (max-width: 768px) {
   .toggle-btn {
+    display: none;
+  }
+
+  /* Show mobile toggle bar only on mobile */
+  .mobile-toggle-bar {
+    display: flex;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-toggle-bar {
     display: none;
   }
 }

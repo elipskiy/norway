@@ -90,6 +90,34 @@ function initMap() {
   } else {
     console.error("tripData is not defined - check data.js loading");
   }
+  
+  // Initialize mobile panels as hidden on mobile devices
+  if (window.innerWidth <= 768) {
+    document.getElementById('controls-panel')?.classList.add('hidden');
+    document.getElementById('locations-panel')?.classList.add('hidden');
+  }
+  
+  // Handle window resize for mobile/desktop transitions
+  window.addEventListener('resize', () => {
+    const isMobile = window.innerWidth <= 768;
+    const controlsPanel = document.getElementById('controls-panel');
+    const locationsPanel = document.getElementById('locations-panel');
+    
+    if (isMobile) {
+      // Switch to mobile mode - hide panels initially
+      controlsPanel?.classList.add('hidden');
+      locationsPanel?.classList.add('hidden');
+      // Remove active states from mobile buttons
+      document.getElementById('mobile-controls-btn')?.classList.remove('active');
+      document.getElementById('mobile-locations-btn')?.classList.remove('active');
+    } else {
+      // Switch to desktop mode - show panels and clear mobile classes
+      controlsPanel?.classList.remove('hidden');
+      locationsPanel?.classList.remove('hidden');
+      controlsPanel.style.display = 'block';
+      locationsPanel.style.display = 'block';
+    }
+  });
 
   // Log API usage stats after initialization
   setTimeout(() => {
@@ -916,6 +944,30 @@ function togglePanel(panelType) {
   panel.style.display = panel.style.display === "none" ? "block" : "none";
 }
 
+// Mobile panel toggle function
+function toggleMobilePanel(panelType) {
+  const panel = document.getElementById(`${panelType}-panel`);
+  const btn = document.getElementById(`mobile-${panelType}-btn`);
+  const otherPanelType = panelType === 'controls' ? 'locations' : 'controls';
+  const otherPanel = document.getElementById(`${otherPanelType}-panel`);
+  const otherBtn = document.getElementById(`mobile-${otherPanelType}-btn`);
+  
+  // Hide other panel first
+  if (otherPanel && !otherPanel.classList.contains('hidden')) {
+    otherPanel.classList.add('hidden');
+    otherBtn?.classList.remove('active');
+  }
+  
+  // Toggle current panel
+  if (panel.classList.contains('hidden')) {
+    panel.classList.remove('hidden');
+    btn.classList.add('active');
+  } else {
+    panel.classList.add('hidden');
+    btn.classList.remove('active');
+  }
+}
+
 function toggleGemRoutes() {
   showGemRoutes = document.getElementById("show-gem-routes").checked;
 
@@ -987,6 +1039,7 @@ window.focusOnLocationAndOpen = focusOnLocationAndOpen;
 window.highlightMarker = highlightMarker;
 window.togglePanel = togglePanel;
 window.toggleGemRoutes = toggleGemRoutes;
+window.toggleMobilePanel = toggleMobilePanel;
 // Load Google Maps API dynamically using config
 function loadGoogleMapsAPI() {
   if (typeof CONFIG === "undefined") {
