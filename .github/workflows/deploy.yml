@@ -44,6 +44,8 @@ jobs:
           EOF
           echo "Created config.js with API key"
           head -5 config.js
+  - name: Build
+    run: node build.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
