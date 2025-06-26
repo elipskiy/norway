@@ -1,3 +1,7 @@
+// AICODE-NOTE: Route continuity improvement - when showing specific day,
+// routes now start from previous day's accommodation (camping)
+// This provides logical travel continuity for multi-day trips
+
 import { tripData } from "./data.js";
 
 let map;
@@ -54,21 +58,21 @@ function initMap() {
     center: { lat: 61.5, lng: 8.0 },
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     styles: [
-{
-  featureType: "poi",
-  elementType: "labels",
-  stylers: [{ visibility: "off" }],
-},
-{
-  featureType: "water",
-  elementType: "geometry",
-  stylers: [{ color: "#a2daf2" }],
-},
-{
-  featureType: "landscape",
-  elementType: "geometry.fill",
-  stylers: [{ color: "#f5f5f2" }],
-},
+      {
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [{ visibility: "off" }],
+      },
+      {
+        featureType: "water",
+        elementType: "geometry",
+        stylers: [{ color: "#a2daf2" }],
+      },
+      {
+        featureType: "landscape",
+        elementType: "geometry.fill",
+        stylers: [{ color: "#f5f5f2" }],
+      },
     ],
   });
 
@@ -90,7 +94,7 @@ function initMap() {
   // Log API usage stats after initialization
   setTimeout(() => {
     console.log(
-`API Usage Stats: ${apiRequestCount} requests, ${cacheHits} cache hits, ${directionsCache.size} cached routes`
+      `API Usage Stats: ${apiRequestCount} requests, ${cacheHits} cache hits, ${directionsCache.size} cached routes`
     );
   }, 5000);
 }
@@ -140,8 +144,8 @@ function addLocationMarker(location, dayNum) {
     location.time
   }</p>
 <p style="margin: 0 0 12px 0; font-size: 13px; line-height: 1.4; color: #374151;">${
-  location.description
-}</p>
+    location.description
+  }</p>
 ${
   location.notes
     ? `<div style="margin: 0 0 12px 0; padding: 8px; background: #fef3c7; border-radius: 6px; border-left: 3px solid #f59e0b;"><p style="margin: 0; font-size: 11px; color: #92400e; font-weight: 500;">💡 ${location.notes}</p></div>`
@@ -161,18 +165,18 @@ ${
   // Hover effects with animation-like behavior
   marker.addListener("mouseover", () => {
     const hoveredIcon = {
-...markerIcon,
-scale: 18, // Заметно увеличиваем размер
-strokeWeight: 5, // Утолщаем обводку
-fillOpacity: 1.0, // Делаем полностью непрозрачным
-strokeColor: "#FFD700", // Золотая обводка при hover
+      ...markerIcon,
+      scale: 18, // Заметно увеличиваем размер
+      strokeWeight: 5, // Утолщаем обводку
+      fillOpacity: 1.0, // Делаем полностью непрозрачным
+      strokeColor: "#FFD700", // Золотая обводка при hover
     };
     marker.setIcon(hoveredIcon);
 
     // Добавляем небольшую анимацию подпрыгивания
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(() => {
-marker.setAnimation(null);
+      marker.setAnimation(null);
     }, 200); // Останавливаем анимацию через 200мс
   });
 
@@ -197,8 +201,7 @@ function addRouteLines(dayData) {
 
   // Filter out hidden gems and optional locations from main route
   const mainRouteLocations = dayData.locations.filter(
-    (location) =>
-location.type !== "hidden_gem" && location.type !== "optional"
+    (location) => location.type !== "hidden_gem" && location.type !== "optional"
   );
 
   console.log(
@@ -208,25 +211,37 @@ location.type !== "hidden_gem" && location.type !== "optional"
 
   const waypoints = [];
 
+  // Add starting point from previous day's accommodation (camping)
+  const previousDayAccommodation = findPreviousDayAccommodation(dayData.day);
+  if (previousDayAccommodation) {
+    waypoints.push({
+      lat: previousDayAccommodation.coordinates[0],
+      lng: previousDayAccommodation.coordinates[1],
+    });
+    console.log(
+      `Added previous day accommodation as start: ${previousDayAccommodation.name}`
+    );
+  }
+
   // Add main route locations only (skip day coordinates as they might be end point)
   mainRouteLocations.forEach((location) => {
     if (location.coordinates) {
-waypoints.push({
-  lat: location.coordinates[0],
-  lng: location.coordinates[1],
-});
+      waypoints.push({
+        lat: location.coordinates[0],
+        lng: location.coordinates[1],
+      });
     }
   });
 
-  // If we don't have enough waypoints, but day has coordinates, use them as start
+  // If we still don't have enough waypoints, but day has coordinates, use them as start
   if (waypoints.length < 2 && dayData.coordinates) {
     waypoints.unshift({
-lat: dayData.coordinates[0],
-lng: dayData.coordinates[1],
+      lat: dayData.coordinates[0],
+      lng: dayData.coordinates[1],
     });
     console.log(
-"Added day coordinates as start due to insufficient waypoints:",
-dayData.coordinates
+      "Added day coordinates as start due to insufficient waypoints:",
+      dayData.coordinates
     );
   }
 
@@ -238,7 +253,7 @@ dayData.coordinates
     buildDrivingRoute(waypoints);
   } else {
     console.warn(
-`Not enough waypoints for Day ${dayData.day}: ${waypoints.length}`
+      `Not enough waypoints for Day ${dayData.day}: ${waypoints.length}`
     );
   }
 
@@ -264,14 +279,14 @@ function loadCache() {
   try {
     const cached = localStorage.getItem("directionsCache");
     if (cached) {
-const cacheData = JSON.parse(cached);
-// Check if cache is still valid
-const now = Date.now();
-Object.entries(cacheData).forEach(([key, value]) => {
-  if (now - value.timestamp < CACHE_EXPIRY) {
-    directionsCache.set(key, value.result);
-  }
-});
+      const cacheData = JSON.parse(cached);
+      // Check if cache is still valid
+      const now = Date.now();
+      Object.entries(cacheData).forEach(([key, value]) => {
+        if (now - value.timestamp < CACHE_EXPIRY) {
+          directionsCache.set(key, value.result);
+        }
+      });
     }
   } catch (e) {
     console.warn("Failed to load directions cache:", e);
@@ -283,10 +298,10 @@ function saveCache() {
     const cacheData = {};
     const now = Date.now();
     directionsCache.forEach((result, key) => {
-cacheData[key] = {
-  result: result,
-  timestamp: now,
-};
+      cacheData[key] = {
+        result: result,
+        timestamp: now,
+      };
     });
     localStorage.setItem("directionsCache", JSON.stringify(cacheData));
   } catch (e) {
@@ -294,11 +309,7 @@ cacheData[key] = {
   }
 }
 
-function throttledDirectionsRequest(
-  request,
-  callback,
-  isGemRoute = false
-) {
+function throttledDirectionsRequest(request, callback, isGemRoute = false) {
   const cacheKey = createCacheKey(request);
 
   // Check cache first
@@ -312,8 +323,8 @@ function throttledDirectionsRequest(
   // Throttle requests
   if (pendingRequests >= MAX_CONCURRENT_REQUESTS) {
     setTimeout(
-() => throttledDirectionsRequest(request, callback, isGemRoute),
-REQUEST_DELAY
+      () => throttledDirectionsRequest(request, callback, isGemRoute),
+      REQUEST_DELAY
     );
     return;
   }
@@ -323,15 +334,15 @@ REQUEST_DELAY
 
   setTimeout(() => {
     directionsService.route(request, (result, status) => {
-pendingRequests--;
+      pendingRequests--;
 
-if (status === "OK") {
-  // Cache successful result
-  directionsCache.set(cacheKey, result);
-  saveCache();
-}
+      if (status === "OK") {
+        // Cache successful result
+        directionsCache.set(cacheKey, result);
+        saveCache();
+      }
 
-callback(result, status, isGemRoute);
+      callback(result, status, isGemRoute);
     });
   }, REQUEST_DELAY * pendingRequests);
 }
@@ -348,9 +359,9 @@ function buildDrivingRoute(waypoints) {
   } else {
     // Split into multiple segments
     console.log(
-"Splitting long route into segments:",
-waypoints.length,
-"waypoints"
+      "Splitting long route into segments:",
+      waypoints.length,
+      "waypoints"
     );
     buildSegmentedDrivingRoute(waypoints);
   }
@@ -374,49 +385,43 @@ function buildSingleDrivingRoute(waypoints, isSegment = false) {
 
   throttledDirectionsRequest(request, (result, status) => {
     if (status === "OK") {
-const directionsRenderer = new google.maps.DirectionsRenderer({
-  suppressMarkers: true, // We have our own markers
-  preserveViewport: true,
-  polylineOptions: {
-    strokeColor: "#3B82F6",
-    strokeOpacity: 0.8,
-    strokeWeight: 4,
-  },
-});
+      const directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers: true, // We have our own markers
+        preserveViewport: true,
+        polylineOptions: {
+          strokeColor: "#3B82F6",
+          strokeOpacity: 0.8,
+          strokeWeight: 4,
+        },
+      });
 
-directionsRenderer.setDirections(result);
-directionsRenderer.setMap(map);
-directionsRenderers.push(directionsRenderer);
-console.log(
-  "Driving route built successfully with",
-  waypoints.length,
-  "waypoints"
-);
+      directionsRenderer.setDirections(result);
+      directionsRenderer.setMap(map);
+      directionsRenderers.push(directionsRenderer);
+      console.log(
+        "Driving route built successfully with",
+        waypoints.length,
+        "waypoints"
+      );
     } else {
-console.warn(
-  "Directions request failed due to " + status + " for route with",
-  waypoints.length,
-  "waypoints"
-);
-console.log("Failed waypoints:", waypoints);
+      console.warn(
+        "Directions request failed due to " + status + " for route with",
+        waypoints.length,
+        "waypoints"
+      );
+      console.log("Failed waypoints:", waypoints);
 
-// Try alternative strategies based on error type
-if (
-  !isSegment &&
-  status === "ZERO_RESULTS" &&
-  waypoints.length > 3
-) {
-  console.log("Trying segmented approach due to ZERO_RESULTS");
-  buildSegmentedDrivingRoute(waypoints);
-} else if (!isSegment && status === "MAX_WAYPOINTS_EXCEEDED") {
-  console.log(
-    "Forcing segmented approach due to too many waypoints"
-  );
-  buildSegmentedDrivingRoute(waypoints);
-} else {
-  // Fallback to straight lines if directions fail
-  buildFallbackRoute(waypoints);
-}
+      // Try alternative strategies based on error type
+      if (!isSegment && status === "ZERO_RESULTS" && waypoints.length > 3) {
+        console.log("Trying segmented approach due to ZERO_RESULTS");
+        buildSegmentedDrivingRoute(waypoints);
+      } else if (!isSegment && status === "MAX_WAYPOINTS_EXCEEDED") {
+        console.log("Forcing segmented approach due to too many waypoints");
+        buildSegmentedDrivingRoute(waypoints);
+      } else {
+        // Fallback to straight lines if directions fail
+        buildFallbackRoute(waypoints);
+      }
     }
   });
 }
@@ -424,24 +429,24 @@ if (
 function buildSegmentedDrivingRoute(waypoints) {
   const MAX_SEGMENT_SIZE = 8; // Smaller segments for better reliability
 
-    for (let i = 0; i < waypoints.length - 1; i += MAX_SEGMENT_SIZE - 1) {
-const segmentEnd = Math.min(i + MAX_SEGMENT_SIZE, waypoints.length);
-const segmentWaypoints = waypoints.slice(i, segmentEnd);
+  for (let i = 0; i < waypoints.length - 1; i += MAX_SEGMENT_SIZE - 1) {
+    const segmentEnd = Math.min(i + MAX_SEGMENT_SIZE, waypoints.length);
+    const segmentWaypoints = waypoints.slice(i, segmentEnd);
 
-if (segmentWaypoints.length >= 2) {
-  buildSingleDrivingRoute(segmentWaypoints, true);
-}
+    if (segmentWaypoints.length >= 2) {
+      buildSingleDrivingRoute(segmentWaypoints, true);
     }
+  }
 }
 
 function buildFallbackRoute(waypoints) {
   if (waypoints.length > 1) {
     const routeLine = new google.maps.Polyline({
-path: waypoints,
-geodesic: true,
-strokeColor: "#3B82F6",
-strokeOpacity: 0.8,
-strokeWeight: 4,
+      path: waypoints,
+      geodesic: true,
+      strokeColor: "#3B82F6",
+      strokeOpacity: 0.8,
+      strokeWeight: 4,
     });
 
     routeLine.setMap(map);
@@ -451,8 +456,7 @@ strokeWeight: 4,
 
 function addGemRoutes(dayData, mainRouteLocations) {
   const gemLocations = dayData.locations.filter(
-    (location) =>
-location.type === "hidden_gem" || location.type === "optional"
+    (location) => location.type === "hidden_gem" || location.type === "optional"
   );
 
   gemLocations.forEach((gemLocation) => {
@@ -464,56 +468,56 @@ location.type === "hidden_gem" || location.type === "optional"
 
     const allMainCoords = [];
     if (dayData.coordinates) {
-allMainCoords.push({
-  lat: dayData.coordinates[0],
-  lng: dayData.coordinates[1],
-});
+      allMainCoords.push({
+        lat: dayData.coordinates[0],
+        lng: dayData.coordinates[1],
+      });
     }
     mainRouteLocations.forEach((loc) => {
-if (loc.coordinates) {
-  allMainCoords.push({
-    lat: loc.coordinates[0],
-    lng: loc.coordinates[1],
-  });
-}
+      if (loc.coordinates) {
+        allMainCoords.push({
+          lat: loc.coordinates[0],
+          lng: loc.coordinates[1],
+        });
+      }
     });
 
     allMainCoords.forEach((coord) => {
-const distance = calculateDistance(
-  gemLocation.coordinates[0],
-  gemLocation.coordinates[1],
-  coord.lat,
-  coord.lng
-);
-if (distance < minDistance) {
-  minDistance = distance;
-  closestLocation = coord;
-}
+      const distance = calculateDistance(
+        gemLocation.coordinates[0],
+        gemLocation.coordinates[1],
+        coord.lat,
+        coord.lng
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestLocation = coord;
+      }
     });
 
     // Build driving route to closest main route point
     // Only use API for routes longer than 5km to save quota
     if (closestLocation) {
-if (minDistance > 5) {
-  buildGemDrivingRoute(
-    closestLocation,
-    {
-      lat: gemLocation.coordinates[0],
-      lng: gemLocation.coordinates[1],
-    },
-    gemLocation.type
-  );
-} else {
-  // Use fallback for short distances
-  buildFallbackGemRoute(
-    closestLocation,
-    {
-      lat: gemLocation.coordinates[0],
-      lng: gemLocation.coordinates[1],
-    },
-    gemLocation.type
-  );
-}
+      if (minDistance > 5) {
+        buildGemDrivingRoute(
+          closestLocation,
+          {
+            lat: gemLocation.coordinates[0],
+            lng: gemLocation.coordinates[1],
+          },
+          gemLocation.type
+        );
+      } else {
+        // Use fallback for short distances
+        buildFallbackGemRoute(
+          closestLocation,
+          {
+            lat: gemLocation.coordinates[0],
+            lng: gemLocation.coordinates[1],
+          },
+          gemLocation.type
+        );
+      }
     }
   });
 }
@@ -528,26 +532,26 @@ function buildGemDrivingRoute(fromPoint, toPoint, gemType) {
   throttledDirectionsRequest(
     request,
     (result, status) => {
-if (status === "OK") {
-  const directionsRenderer = new google.maps.DirectionsRenderer({
-    suppressMarkers: true, // We have our own markers
-    preserveViewport: true,
-    polylineOptions: {
-      strokeColor: gemType === "hidden_gem" ? "#EC4899" : "#F97316",
-      strokeOpacity: 0.6,
-      strokeWeight: 3,
-      strokePattern: [10, 5], // Dashed line for gem routes
-    },
-  });
+      if (status === "OK") {
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+          suppressMarkers: true, // We have our own markers
+          preserveViewport: true,
+          polylineOptions: {
+            strokeColor: gemType === "hidden_gem" ? "#EC4899" : "#F97316",
+            strokeOpacity: 0.6,
+            strokeWeight: 3,
+            strokePattern: [10, 5], // Dashed line for gem routes
+          },
+        });
 
-  directionsRenderer.setDirections(result);
-  directionsRenderer.setMap(map);
-  gemDirectionsRenderers.push(directionsRenderer);
-} else {
-  console.warn("Gem directions request failed due to " + status);
-  // Fallback to dashed straight line if directions fail
-  buildFallbackGemRoute(fromPoint, toPoint, gemType);
-}
+        directionsRenderer.setDirections(result);
+        directionsRenderer.setMap(map);
+        gemDirectionsRenderers.push(directionsRenderer);
+      } else {
+        console.warn("Gem directions request failed due to " + status);
+        // Fallback to dashed straight line if directions fail
+        buildFallbackGemRoute(fromPoint, toPoint, gemType);
+      }
     },
     true
   );
@@ -561,11 +565,11 @@ function buildFallbackGemRoute(fromPoint, toPoint, gemType) {
     strokeOpacity: 0.6,
     strokeWeight: 3,
     icons: [
-{
-  icon: { path: "M 0,-1 0,1", strokeOpacity: 1, scale: 4 },
-  offset: "0",
-  repeat: "20px",
-},
+      {
+        icon: { path: "M 0,-1 0,1", strokeOpacity: 1, scale: 4 },
+        offset: "0",
+        repeat: "20px",
+      },
     ],
   });
 
@@ -580,11 +584,48 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos((lat1 * Math.PI) / 180) *
-Math.cos((lat2 * Math.PI) / 180) *
-Math.sin(dLng / 2) *
-Math.sin(dLng / 2);
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
+}
+
+function findPreviousDayAccommodation(currentDay) {
+  if (currentDay <= 1) return null; // No previous day for day 1
+
+  const previousDay = currentDay - 1;
+  const previousDayData = tripData.days.find((day) => day.day === previousDay);
+
+  if (!previousDayData) return null;
+
+  // Find the last accommodation in the previous day
+  const accommodations = previousDayData.locations.filter(
+    (location) => location.type === "accommodation"
+  );
+
+  if (accommodations.length > 0) {
+    // Return the last accommodation (usually the camping/hotel for the night)
+    return accommodations[accommodations.length - 1];
+  }
+
+  // Fallback: if no accommodation found, use the last location of the day
+  const lastLocation =
+    previousDayData.locations[previousDayData.locations.length - 1];
+  if (lastLocation && lastLocation.coordinates) {
+    return lastLocation;
+  }
+
+  // Final fallback: use day coordinates if available
+  if (previousDayData.coordinates) {
+    return {
+      name: `End of Day ${previousDay}`,
+      coordinates: previousDayData.coordinates,
+      type: "logistics",
+    };
+  }
+
+  return null;
 }
 
 function showDay(dayNum) {
@@ -594,9 +635,15 @@ function showDay(dayNum) {
   const dayData = tripData.days.find((day) => day.day === dayNum);
   if (!dayData) return;
 
+  // Add marker for previous day's accommodation (starting point)
+  const previousDayAccommodation = findPreviousDayAccommodation(dayNum);
+  if (previousDayAccommodation) {
+    addLocationMarker(previousDayAccommodation, dayNum - 1);
+  }
+
   dayData.locations.forEach((location) => {
     if (currentFilter === "all" || location.type === currentFilter) {
-addLocationMarker(location, dayNum);
+      addLocationMarker(location, dayNum);
     }
   });
 
@@ -615,9 +662,9 @@ addLocationMarker(location, dayNum);
     // Fallback: find button by text content
     const buttons = document.querySelectorAll(".day-button");
     buttons.forEach((btn) => {
-if (btn.textContent.trim() === dayNum.toString()) {
-  btn.classList.add("active");
-}
+      if (btn.textContent.trim() === dayNum.toString()) {
+        btn.classList.add("active");
+      }
     });
   }
 
@@ -630,9 +677,9 @@ function showAllDays() {
 
   tripData.days.forEach((day) => {
     day.locations.forEach((location) => {
-if (currentFilter === "all" || location.type === currentFilter) {
-  addLocationMarker(location, day.day);
-}
+      if (currentFilter === "all" || location.type === currentFilter) {
+        addLocationMarker(location, day.day);
+      }
     });
     addRouteLines(day);
   });
@@ -641,18 +688,16 @@ if (currentFilter === "all" || location.type === currentFilter) {
   document
     .querySelectorAll(".day-button")
     .forEach((btn) => btn.classList.remove("active"));
-  const allDaysButton = document.querySelector(
-    '[onclick*="showAllDays"]'
-  );
+  const allDaysButton = document.querySelector('[onclick*="showAllDays"]');
   if (allDaysButton) {
     allDaysButton.classList.add("active");
   } else {
     // Fallback: find button with "Все" text
     const buttons = document.querySelectorAll(".day-button");
     buttons.forEach((btn) => {
-if (btn.textContent.trim() === "Все") {
-  btn.classList.add("active");
-}
+      if (btn.textContent.trim() === "Все") {
+        btn.classList.add("active");
+      }
     });
   }
 
@@ -681,7 +726,7 @@ function filterLocations(type) {
     // Fallback: find button by class
     const fallbackButton = document.querySelector(`.btn-${type}`);
     if (fallbackButton) {
-fallbackButton.classList.add("active");
+      fallbackButton.classList.add("active");
     }
   }
 }
@@ -693,9 +738,9 @@ function initializeMapWithoutZoom() {
 
   tripData.days.forEach((day) => {
     day.locations.forEach((location) => {
-if (currentFilter === "all" || location.type === currentFilter) {
-  addLocationMarker(location, day.day);
-}
+      if (currentFilter === "all" || location.type === currentFilter) {
+        addLocationMarker(location, day.day);
+      }
     });
     addRouteLines(day);
   });
@@ -704,17 +749,15 @@ if (currentFilter === "all" || location.type === currentFilter) {
   document
     .querySelectorAll(".day-button")
     .forEach((btn) => btn.classList.remove("active"));
-  const allDaysButton = document.querySelector(
-    '[onclick*="showAllDays"]'
-  );
+  const allDaysButton = document.querySelector('[onclick*="showAllDays"]');
   if (allDaysButton) {
     allDaysButton.classList.add("active");
   } else {
     const buttons = document.querySelectorAll(".day-button");
     buttons.forEach((btn) => {
-if (btn.textContent.trim() === "Все") {
-  btn.classList.add("active");
-}
+      if (btn.textContent.trim() === "Все") {
+        btn.classList.add("active");
+      }
     });
   }
 }
@@ -728,21 +771,18 @@ function clearOldCache() {
   try {
     const cached = localStorage.getItem("directionsCache");
     if (cached) {
-const cacheData = JSON.parse(cached);
-const now = Date.now();
-const validCacheData = {};
+      const cacheData = JSON.parse(cached);
+      const now = Date.now();
+      const validCacheData = {};
 
-Object.entries(cacheData).forEach(([key, value]) => {
-  if (now - value.timestamp < CACHE_EXPIRY) {
-    validCacheData[key] = value;
-  }
-});
+      Object.entries(cacheData).forEach(([key, value]) => {
+        if (now - value.timestamp < CACHE_EXPIRY) {
+          validCacheData[key] = value;
+        }
+      });
 
-localStorage.setItem(
-  "directionsCache",
-  JSON.stringify(validCacheData)
-);
-console.log("Cleaned old cache entries");
+      localStorage.setItem("directionsCache", JSON.stringify(validCacheData));
+      console.log("Cleaned old cache entries");
     }
   } catch (e) {
     console.warn("Failed to clean cache:", e);
@@ -757,12 +797,12 @@ function calculateStats() {
   tripData.days.forEach((day) => {
     totalLocations += day.locations.length;
     hiddenGems += day.locations.filter(
-(loc) => loc.type === "hidden_gem"
+      (loc) => loc.type === "hidden_gem"
     ).length;
 
     const distanceMatch = day.distance.match(/(\d+)/);
     if (distanceMatch) {
-totalDistance += parseInt(distanceMatch[1]);
+      totalDistance += parseInt(distanceMatch[1]);
     }
   });
 
@@ -780,14 +820,14 @@ function renderLocationList() {
 
   const filteredMarkers = markers.filter(
     (item) =>
-(currentFilter === "all" || item.type === currentFilter) &&
-(currentDay === "all" || item.day === currentDay)
+      (currentFilter === "all" || item.type === currentFilter) &&
+      (currentDay === "all" || item.day === currentDay)
   );
 
   const locationsByDay = {};
   filteredMarkers.forEach((item) => {
     if (!locationsByDay[item.day]) {
-locationsByDay[item.day] = [];
+      locationsByDay[item.day] = [];
     }
     locationsByDay[item.day].push(item);
   });
@@ -795,32 +835,32 @@ locationsByDay[item.day] = [];
   Object.keys(locationsByDay)
     .sort((a, b) => parseInt(a) - parseInt(b))
     .forEach((day) => {
-const dayData = tripData.days.find((d) => d.day == day);
-const dayDiv = document.createElement("div");
-dayDiv.className = "day-locations";
+      const dayData = tripData.days.find((d) => d.day == day);
+      const dayDiv = document.createElement("div");
+      dayDiv.className = "day-locations";
 
-dayDiv.innerHTML = `
+      dayDiv.innerHTML = `
   <div class="day-title">День ${day}: ${dayData.title}</div>
   ${locationsByDay[day]
     .map(
       (item) => `
     <div class="location-item" 
-         onclick="focusOnLocationAndOpen(${
-           item.location.coordinates[0]
-         }, ${item.location.coordinates[1]})"
-         onmouseover="highlightMarker(${
-           item.location.coordinates[0]
-         }, ${item.location.coordinates[1]}, true)"
-         onmouseout="highlightMarker(${
-           item.location.coordinates[0]
-         }, ${item.location.coordinates[1]}, false)">
+         onclick="focusOnLocationAndOpen(${item.location.coordinates[0]}, ${
+        item.location.coordinates[1]
+      })"
+         onmouseover="highlightMarker(${item.location.coordinates[0]}, ${
+        item.location.coordinates[1]
+      }, true)"
+         onmouseout="highlightMarker(${item.location.coordinates[0]}, ${
+        item.location.coordinates[1]
+      }, false)">
       <div class="location-marker" style="background-color: ${
         typeColors[item.type]
       }"></div>
       <div class="location-info">
-        <div class="location-name">${getLocationTypeEmoji(
-          item.type
-        )} ${item.location.name}</div>
+        <div class="location-name">${getLocationTypeEmoji(item.type)} ${
+        item.location.name
+      }</div>
         <div class="location-time">${item.location.time}</div>
       </div>
     </div>
@@ -829,7 +869,7 @@ dayDiv.innerHTML = `
     .join("")}
 `;
 
-container.appendChild(dayDiv);
+      container.appendChild(dayDiv);
     });
 }
 
@@ -844,8 +884,8 @@ function focusOnLocationAndOpen(lat, lng) {
 
   const markerItem = markers.find(
     (item) =>
-item.location.coordinates[0] === lat &&
-item.location.coordinates[1] === lng
+      item.location.coordinates[0] === lat &&
+      item.location.coordinates[1] === lng
   );
 
   if (markerItem) {
@@ -856,17 +896,17 @@ item.location.coordinates[1] === lng
 function highlightMarker(lat, lng, highlight) {
   const markerItem = markers.find(
     (item) =>
-item.location.coordinates[0] === lat &&
-item.location.coordinates[1] === lng
+      item.location.coordinates[0] === lat &&
+      item.location.coordinates[1] === lng
   );
 
   if (markerItem) {
     if (highlight) {
-// Trigger mouseover effect
-google.maps.event.trigger(markerItem.marker, "mouseover");
+      // Trigger mouseover effect
+      google.maps.event.trigger(markerItem.marker, "mouseover");
     } else {
-// Trigger mouseout effect
-google.maps.event.trigger(markerItem.marker, "mouseout");
+      // Trigger mouseout effect
+      google.maps.event.trigger(markerItem.marker, "mouseout");
     }
   }
 }
@@ -896,9 +936,9 @@ function toggleGemRoutes() {
     gemDirectionsRenderers.length === 0
   ) {
     if (currentDay === "all") {
-showAllDays();
+      showAllDays();
     } else {
-showDay(currentDay);
+      showDay(currentDay);
     }
   }
 }
@@ -909,30 +949,30 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".day-button").forEach((button) => {
     const onclick = button.getAttribute("onclick");
     if (onclick) {
-button.addEventListener("click", function (e) {
-  e.preventDefault();
-  if (onclick.includes("showAllDays")) {
-    showAllDays();
-  } else {
-    const dayMatch = onclick.match(/showDay\((\d+)\)/);
-    if (dayMatch) {
-      showDay(parseInt(dayMatch[1]));
-    }
-  }
-});
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (onclick.includes("showAllDays")) {
+          showAllDays();
+        } else {
+          const dayMatch = onclick.match(/showDay\((\d+)\)/);
+          if (dayMatch) {
+            showDay(parseInt(dayMatch[1]));
+          }
+        }
+      });
     }
   });
 
   document.querySelectorAll(".filter-btn").forEach((button) => {
     const onclick = button.getAttribute("onclick");
     if (onclick) {
-button.addEventListener("click", function (e) {
-  e.preventDefault();
-  const filterMatch = onclick.match(/filterLocations\('(\w+)'\)/);
-  if (filterMatch) {
-    filterLocations(filterMatch[1]);
-  }
-});
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        const filterMatch = onclick.match(/filterLocations\('(\w+)'\)/);
+        if (filterMatch) {
+          filterLocations(filterMatch[1]);
+        }
+      });
     }
   });
 });
@@ -949,33 +989,38 @@ window.togglePanel = togglePanel;
 window.toggleGemRoutes = toggleGemRoutes;
 // Load Google Maps API dynamically using config
 function loadGoogleMapsAPI() {
-  if (typeof CONFIG === 'undefined') {
-    console.error('CONFIG не найден! Убедитесь, что config.js загружен.');
-    document.body.innerHTML = '<div style="padding: 20px; text-align: center; font-family: system-ui;"><h2>⚠️ Ошибка конфигурации</h2><p>Файл config.js не найден или не содержит API ключ.</p><p>Следуйте инструкциям в README.md для настройки.</p></div>';
-    return;
-  }
-  
-  if (!CONFIG.GOOGLE_MAPS_API_KEY || CONFIG.GOOGLE_MAPS_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY_HERE') {
-    console.error('Google Maps API ключ не настроен!');
-    document.body.innerHTML = '<div style="padding: 20px; text-align: center; font-family: system-ui;"><h2>🔑 Требуется API ключ</h2><p>Настройте Google Maps API ключ в файле config.js</p><p>Следуйте инструкциям в README.md</p></div>';
+  if (typeof CONFIG === "undefined") {
+    console.error("CONFIG не найден! Убедитесь, что config.js загружен.");
+    document.body.innerHTML =
+      '<div style="padding: 20px; text-align: center; font-family: system-ui;"><h2>⚠️ Ошибка конфигурации</h2><p>Файл config.js не найден или не содержит API ключ.</p><p>Следуйте инструкциям в README.md для настройки.</p></div>';
     return;
   }
 
-  const script = document.createElement('script');
+  if (
+    !CONFIG.GOOGLE_MAPS_API_KEY ||
+    CONFIG.GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY_HERE"
+  ) {
+    console.error("Google Maps API ключ не настроен!");
+    document.body.innerHTML =
+      '<div style="padding: 20px; text-align: center; font-family: system-ui;"><h2>🔑 Требуется API ключ</h2><p>Настройте Google Maps API ключ в файле config.js</p><p>Следуйте инструкциям в README.md</p></div>';
+    return;
+  }
+
+  const script = document.createElement("script");
   script.async = true;
   script.defer = true;
   script.src = `https://maps.googleapis.com/maps/api/js?key=${CONFIG.GOOGLE_MAPS_API_KEY}&callback=initMap`;
-  script.onerror = function() {
-    console.error('Ошибка загрузки Google Maps API');
-    document.body.innerHTML = '<div style="padding: 20px; text-align: center; font-family: system-ui;"><h2>🌐 Ошибка загрузки карты</h2><p>Не удалось загрузить Google Maps API.</p><p>Проверьте API ключ и подключение к интернету.</p></div>';
+  script.onerror = function () {
+    console.error("Ошибка загрузки Google Maps API");
+    document.body.innerHTML =
+      '<div style="padding: 20px; text-align: center; font-family: system-ui;"><h2>🌐 Ошибка загрузки карты</h2><p>Не удалось загрузить Google Maps API.</p><p>Проверьте API ключ и подключение к интернету.</p></div>';
   };
   document.head.appendChild(script);
 }
 
 // Load API after DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadGoogleMapsAPI);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", loadGoogleMapsAPI);
 } else {
   loadGoogleMapsAPI();
 }
-
