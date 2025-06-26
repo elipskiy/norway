@@ -60,7 +60,8 @@ export const tripData = {
           coordinates: [61.779667, 7.010478], // ← fixed
           notes:
             "Узкая платная дорога (наличные). Уединенный ужин вдали от толпы",
-          photo: "images/landscapes/kjenndalstova-glacier-view.jpg",
+          // photo: "images/landscapes/kjenndalstova-glacier-view.jpg",
+          inspirationCategory: "glacier",
         },
         {
           name: "Lo-Vik Camping",
@@ -90,7 +91,9 @@ export const tripData = {
           type: "activity",
           maps: "https://maps.google.com/?q=Loen+Active",
           coordinates: [61.874744, 6.838921],
+          // photo: "images/landscapes/via-ferrata-loen.jpg",
           notes: "Бронь на 08:00; перчатки, 1½ л воды, слойная одежда",
+          inspirationCategory: "adventure",
         },
         {
           name: "Долина Norangsdalen",
@@ -101,7 +104,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Lygnstøylvatnet",
           coordinates: [62.174722, 6.729167],
           notes: "Фантастические фото сквозь прозрачную воду",
-          photo: "images/landscapes/norangsdalen-submerged-village.jpg",
+          // photo: "images/landscapes/norangsdalen-submerged-village.jpg",
+          inspirationCategory: "valley",
         },
         {
           name: "Паром Eidsdal → Linge",
@@ -161,7 +165,8 @@ export const tripData = {
           coordinates: [62.4566, 7.6719],
           notes:
             "Участок со стороны Åndalsnes открыт с 14 июля; спускаемся обратно тем же путём",
-          photo: "images/landscapes/trollstigen-serpentine-road.jpg",
+          // photo: "images/landscapes/trollstigen-serpentine-road.jpg",
+          inspirationCategory: "road",
         },
         {
           name: "🚶 Тропа Kløvstien (альтернатива)",
@@ -182,6 +187,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Romsdalsgondolen",
           coordinates: [62.566, 7.6865],
           notes: "Билеты онлайн дешевле; заложить ≥ 75 мин с фото",
+          // photo: "images/landscapes/romsdalsgondolen-view.jpg",
+          inspirationCategory: "mountain",
         },
         {
           name: "Trollveggen Visitor Centre",
@@ -192,6 +199,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Trollveggen+visitor+center",
           coordinates: [62.488996, 7.759931], // ← fixed
           notes: "Иногда видны альпинисты",
+          // photo: "images/landscapes/trollveggen-wall.jpg",
+          inspirationCategory: "mountain",
         },
         {
           name: "🦀 Bjartmars Favorittkro (обед)",
@@ -212,7 +221,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Atlanterhavsveien",
           coordinates: [63.01674, 7.35431],
           notes: "Заглянуть в Kvernes Stave Church по дороге (11-17)",
-          photo: "images/landscapes/atlantic-road-storseisundet-bridge.jpg",
+          // photo: "images/landscapes/atlantic-road-storseisundet-bridge.jpg",
+          inspirationCategory: "bridge",
         },
         {
           name: "🐟 Деревня Буд (детур)",
@@ -254,6 +264,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Aksla+viewpoint+%C3%85lesund",
           coordinates: [62.475, 6.163], // Aksla viewpoint
           notes: "Обед на рыбном рынке Brogata",
+          // photo: "images/landscapes/alesund-aksla-panoramic-view.jpg",
+          inspirationCategory: "city",
         },
         {
           name: "🏙️ Прогулка по Ålesund (альтернатива)",
@@ -293,7 +305,9 @@ export const tripData = {
           type: "activity",
           maps: "https://maps.google.com/?q=Rundebranden+trailhead",
           coordinates: [62.399, 5.592], // Rundebranden trailhead (Goksøyr)
+          // photo: "images/landscapes/runde-island-puffins.jpg",
           notes: "Птицы возвращаются 19-22:30; взять бинокль, ветрозащиту",
+          inspirationCategory: "island",
         },
       ],
     },
@@ -325,6 +339,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Urke+Kaihus",
           coordinates: [62.213, 6.578], // Urke Kaihus
           notes: "Более аутентичная альтернатива Гейрангеру. Тишина и покой",
+          // photo: "images/landscapes/hjorundfjord-wild-landscape.jpg",
+          inspirationCategory: "fjord",
         },
         {
           name: "Hotel Union Øye",
@@ -334,6 +350,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Hotel+Union+%C3%98ye",
           coordinates: [62.1975, 6.653],
           notes: "Гости: Кайзер Вильгельм II, Ибсен, Амундсен",
+          // photo: "images/landscapes/hotel-union-oye.jpg",
+          inspirationCategory: "hotel",
         },
         {
           name: "Паром Hellesylt → Geiranger",
@@ -352,7 +370,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Dalsnibba+Skywalk",
           coordinates: [62.05, 7.28],
           notes: "260 NOK за авто; не ехать в туман",
-          photo: "images/landscapes/dalsnibba-geirangerfjord-panorama.jpg",
+          // photo: "images/landscapes/dalsnibba-geirangerfjord-panorama.jpg",
+          inspirationCategory: "fjord",
         },
         {
           name: "🐐 Westerås Gard (ужин с видом)",
@@ -374,6 +393,8 @@ export const tripData = {
           coordinates: [62.05, 7.28], // Same as Dalsnibba Skywalk
           notes:
             "Когда автобусы уехали — бесценный момент восхищения. Свобода кемпера!",
+          // photo: "images/landscapes/geiranger-eagle-road.jpg",
+          inspirationCategory: "road",
         },
         {
           name: "Geiranger Camping",
@@ -404,6 +425,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Lom+Stave+Church",
           coordinates: [61.8385, 8.566], // Lom Stave Church
           notes: "Вход 100 NOK; стойка выпечки легендарна",
+          // photo: "images/landscapes/lom-stave-church.jpg",
+          inspirationCategory: "architecture",
         },
         {
           name: "🥐 Bakeriet i Lom (альтернатива)",
@@ -415,6 +438,8 @@ export const tripData = {
           coordinates: [61.839, 8.567],
           notes:
             "Оставить кемпер в Lom Camping, дойти пешком 10 мин. Нет своей парковки",
+          // photo: "images/landscapes/norwegian-stave-church.jpg",
+          inspirationCategory: "architecture",
         },
         {
           name: "Lillehammer Camping",
@@ -424,6 +449,8 @@ export const tripData = {
           maps: "https://maps.google.com/?q=Lillehammer+Camping",
           coordinates: [61.1, 10.47],
           notes: "Вечером пройтись к Lysgårdsbakken",
+          // photo: "images/landscapes/lillehammer-olympic-sites.jpg",
+          inspirationCategory: "sports",
         },
         {
           name: "☕ Atelier Cocoa / Cafe Sorgenfri (вечер)",

@@ -4,7 +4,11 @@
       "Bash(open map.html)",
       "Bash(mkdir:*)",
       "WebFetch(domain:pixabay.com)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(open images/gallery.html)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }

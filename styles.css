@@ -388,6 +388,195 @@ body {
   border-color: #3b82f6;
 }
 
+/* Compact navigation styles */
+.nav-btn-compact {
+  background: white;
+  color: #374151;
+  border: 1px solid #e2e8f0;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn-compact:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  text-decoration: none;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn-compact.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 2px 4px 0 rgba(59, 130, 246, 0.25);
+}
+
+/* Day map button */
+.day-map-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.15s ease;
+  margin-left: 8px;
+}
+
+.day-map-btn:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px 0 rgba(59, 130, 246, 0.25);
+}
+
+/* Location map button */
+.location-map-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 11px;
+  transition: all 0.15s ease;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.location-map-btn:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 1px 3px 0 rgba(59, 130, 246, 0.25);
+}
+
+/* Timeline photo preview */
+.location-photo-preview {
+  margin-top: 12px;
+  border-radius: 8px;
+  position: relative;
+}
+
+/* External photo navigation controls */
+.photo-nav-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  padding: 0 4px;
+}
+
+.photo-nav-btn-external {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  color: #64748b;
+}
+
+.photo-nav-btn-external:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px 0 rgba(59, 130, 246, 0.25);
+}
+
+.photo-counter-external {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+}
+
+/* Photo gallery container */
+.photo-gallery-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.timeline-photo-item {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.timeline-photo-image {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+.timeline-photo-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+.timeline-photo-author {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 2px 4px;
+  font-size: 9px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.timeline-photo-item:hover .timeline-photo-author {
+  opacity: 1;
+}
+
+/* Single photo layout */
+.photo-gallery-container:has(.timeline-photo-item:only-child) {
+  grid-template-columns: 1fr;
+}
+
+.photo-gallery-container:has(.timeline-photo-item:only-child) .timeline-photo-image {
+  height: 120px;
+}
+
+/* Two photos layout */
+.photo-gallery-container:has(.timeline-photo-item:nth-child(2):last-child) {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 /* Text colors */
 .text-primary {
   color: #0f172a;
@@ -449,6 +638,7 @@ body {
 /* Print styles */
 @media print {
   .nav-btn,
+  .nav-btn-compact,
   #location-modal,
   footer {
     display: none !important;

@@ -40,8 +40,8 @@ function showSection(sectionName) {
   // Show selected section
   document.getElementById(sectionName).classList.remove("hidden");
 
-  // Update nav buttons
-  document.querySelectorAll(".nav-btn").forEach((btn) => {
+  // Update nav buttons (both old and new classes)
+  document.querySelectorAll(".nav-btn, .nav-btn-compact").forEach((btn) => {
     btn.classList.remove("active");
   });
   event.target.classList.add("active");
@@ -76,6 +76,12 @@ function renderItinerary() {
           <div class="timeline-stats">
             <span>📍 ${day.distance}</span>
             <span>⏱️ ${day.time}</span>
+            <a href="https://maps.google.com/?q=${day.coordinates[0]},${day.coordinates[1]}" 
+               target="_blank" 
+               class="day-map-btn"
+               title="Открыть день ${day.day} на Google Maps">
+              🗺️
+            </a>
           </div>
         </div>
       </div>
@@ -94,7 +100,18 @@ function renderItinerary() {
               ${getLocationTypeEmoji(location.type)}
             </div>
             <div class="location-details">
-              <div class="location-name">${location.name}</div>
+              <div class="location-name">
+                ${location.name}
+                ${location.maps ? `
+                  <a href="${location.maps}" 
+                     target="_blank" 
+                     class="location-map-btn"
+                     onclick="event.stopPropagation()"
+                     title="Открыть ${location.name} на Google Maps">
+                    🗺️
+                  </a>
+                ` : ''}
+              </div>
               <div class="location-time">${location.time}</div>
               <div class="location-description">${location.description}</div>
               ${
@@ -102,6 +119,25 @@ function renderItinerary() {
                   ? `<div class="location-notes">💡 ${location.notes}</div>`
                   : ""
               }
+              ${(location.photo || location.inspirationCategory) ? `
+                <div class="location-photo-preview" 
+                     data-location="${location.name.replace(/\s+/g, '-')}"
+                     data-day="${day.day}"
+                     data-main-photo="${location.photo || ''}"
+                     data-category="${location.inspirationCategory || ''}"
+                     onclick="event.stopPropagation()">
+                  <div class="photo-nav-controls">
+                    <button class="photo-nav-btn-external prev" onclick="changeLocationPhoto('${location.name.replace(/\s+/g, '-')}', ${day.day}, 'prev')" title="Предыдущие фото">‹</button>
+                    <div class="photo-counter-external">
+                      <span class="current-page">1</span>/<span class="total-pages">1</span>
+                    </div>
+                    <button class="photo-nav-btn-external next" onclick="changeLocationPhoto('${location.name.replace(/\s+/g, '-')}', ${day.day}, 'next')" title="Следующие фото">›</button>
+                  </div>
+                  <div class="photo-gallery-container" id="gallery-${location.name.replace(/\s+/g, '-')}-${day.day}">
+                    <!-- Photos will be loaded here -->
+                  </div>
+                </div>
+              ` : ''}
             </div>
           </div>
         `
@@ -112,6 +148,123 @@ function renderItinerary() {
 
     container.appendChild(timelineItem);
   });
+  
+  // Load inspiration photos for timeline previews
+  loadTimelineInspirationPhotos();
+}
+
+// Store inspiration photos for timeline navigation
+let timelineInspirationPhotos = {};
+const PHOTOS_PER_PAGE = 3; // Show 3 photos at once
+
+async function loadTimelineInspirationPhotos() {
+  try {
+    const response = await fetch('images/inspiration/photo-info.json');
+    const photoInfo = await response.json();
+    
+    // Group photos by category
+    timelineInspirationPhotos = {};
+    photoInfo.forEach(photo => {
+      if (!timelineInspirationPhotos[photo.category]) {
+        timelineInspirationPhotos[photo.category] = [];
+      }
+      timelineInspirationPhotos[photo.category].push(photo);
+    });
+    
+    // Initialize photo galleries and counters
+    document.querySelectorAll('.location-photo-preview').forEach(preview => {
+      const category = preview.dataset.category;
+      const mainPhoto = preview.dataset.mainPhoto;
+      const locationId = preview.dataset.location;
+      const dayNum = preview.dataset.day;
+      
+      // Build all photos array (main photo + inspiration photos)
+      let allPhotos = [];
+      if (mainPhoto) {
+        allPhotos.push({ src: mainPhoto, type: 'main', alt: 'Main photo' });
+      }
+      if (category && timelineInspirationPhotos[category]) {
+        const inspirationPhotos = timelineInspirationPhotos[category].map(photo => ({
+          src: `images/inspiration/${category}/${photo.filename}-small.jpg`,
+          type: 'inspiration',
+          alt: photo.description,
+          author: photo.author
+        }));
+        allPhotos = allPhotos.concat(inspirationPhotos);
+      }
+      
+      if (allPhotos.length > 0) {
+        const totalPages = Math.ceil(allPhotos.length / PHOTOS_PER_PAGE);
+        preview.querySelector('.total-pages').textContent = totalPages;
+        
+        // Store photos data
+        preview.dataset.allPhotos = JSON.stringify(allPhotos);
+        
+        // Load first page
+        loadPhotoPage(locationId, dayNum, 1);
+      }
+    });
+    
+  } catch (error) {
+    console.error('Ошибка загрузки inspiration фотографий для таймлайна:', error);
+  }
+}
+
+function loadPhotoPage(locationId, dayNum, page) {
+  const preview = document.querySelector(`[data-location="${locationId}"][data-day="${dayNum}"]`);
+  if (!preview) return;
+  
+  const allPhotos = JSON.parse(preview.dataset.allPhotos || '[]');
+  const container = document.getElementById(`gallery-${locationId}-${dayNum}`);
+  const mainPhoto = preview.dataset.mainPhoto;
+  
+  if (!container || allPhotos.length === 0) return;
+  
+  // Clear container
+  container.innerHTML = '';
+  
+  const startIndex = (page - 1) * PHOTOS_PER_PAGE;
+  const endIndex = Math.min(startIndex + PHOTOS_PER_PAGE, allPhotos.length);
+  const pagePhotos = allPhotos.slice(startIndex, endIndex);
+  
+  // Generate HTML for photos on this page
+  container.innerHTML = pagePhotos.map((photo, index) => {
+    const globalIndex = startIndex + index;
+    return `
+    <div class="timeline-photo-item">
+      <img src="${photo.src}" 
+           alt="${photo.alt}"
+           class="timeline-photo-image"
+           onerror="this.style.display='none'"
+           onclick="openTimelinePhotoViewer('${locationId}', '${dayNum}', ${globalIndex})">
+      ${photo.author ? `<div class="timeline-photo-author">📸 ${photo.author}</div>` : ''}
+    </div>
+    `;
+  }).join('');
+  
+  // Update page counter
+  preview.querySelector('.current-page').textContent = page;
+}
+
+function changeLocationPhoto(locationId, dayNum, direction) {
+  const preview = document.querySelector(`[data-location="${locationId}"][data-day="${dayNum}"]`);
+  if (!preview) return;
+  
+  const currentPageSpan = preview.querySelector('.current-page');
+  const totalPagesSpan = preview.querySelector('.total-pages');
+  
+  let currentPage = parseInt(currentPageSpan.textContent);
+  const totalPages = parseInt(totalPagesSpan.textContent);
+  
+  // Calculate new page
+  if (direction === 'next') {
+    currentPage = currentPage >= totalPages ? 1 : currentPage + 1;
+  } else {
+    currentPage = currentPage <= 1 ? totalPages : currentPage - 1;
+  }
+  
+  // Load new page
+  loadPhotoPage(locationId, dayNum, currentPage);
 }
 
 function renderChecklist() {
@@ -301,12 +454,45 @@ function showLocationDetails(dayNum, locationName) {
   const location = day.locations.find((l) => l.name === locationName);
 
   document.getElementById("modal-title").textContent = location.name;
+  
+  // Photo HTML if photo exists
+  const photoHtml = location.photo ? `
+    <div class="mb-4 text-center">
+      <img src="${location.photo}" 
+           alt="${location.name} landscape view"
+           class="w-full max-w-md h-48 object-cover rounded-lg shadow-lg mx-auto cursor-pointer hover:shadow-xl transition-shadow"
+           onerror="console.error('Ошибка загрузки фото: ${location.photo}'); this.style.display='none'"
+           onclick="openPhotoViewer('${location.photo}', '${location.name}')"
+           title="Нажмите для увеличения">
+      <div class="text-xs text-gray-500 mt-2 italic">📸 Кликните для полного размера</div>
+    </div>
+  ` : '';
+
+  // Inspiration gallery HTML if category exists
+  const inspirationHtml = location.inspirationCategory ? `
+    <div class="mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="font-semibold text-purple-700">🎨 Галерея вдохновения</h4>
+        <button onclick="openInspirationGallery('${location.inspirationCategory}', '${location.name}')" 
+                class="text-sm text-purple-600 hover:text-purple-800 underline">
+          Посмотреть все →
+        </button>
+      </div>
+      <div id="inspiration-preview-${dayNum}-${locationName.replace(/\s+/g, '-')}" class="grid grid-cols-3 gap-2">
+        <div class="text-center text-gray-500 text-sm">Загрузка...</div>
+      </div>
+    </div>
+  ` : '';
+
   document.getElementById("modal-content").innerHTML = `
     <div class="space-y-4">
       <div class="flex items-center space-x-2">
         <span class="text-lg">${getLocationTypeEmoji(location.type)}</span>
         <span class="text-muted">${location.time}</span>
       </div>
+      
+      ${photoHtml}
+      ${inspirationHtml}
       
       <p class="text-primary">${location.description}</p>
       
@@ -340,11 +526,273 @@ function showLocationDetails(dayNum, locationName) {
     </div>
   `;
 
+  // Load inspiration preview if category exists
+  if (location.inspirationCategory) {
+    loadInspirationPreview(location.inspirationCategory, dayNum, locationName);
+  }
+
   document.getElementById("location-modal").style.display = "flex";
 }
 
 function closeModal() {
   document.getElementById("location-modal").style.display = "none";
+}
+
+function openPhotoViewer(photoSrc, locationName, photoArray = null, currentIndex = 0) {
+  // Create or get photo viewer modal
+  let photoViewer = document.getElementById('photo-viewer');
+  if (!photoViewer) {
+    photoViewer = document.createElement('div');
+    photoViewer.id = 'photo-viewer';
+    photoViewer.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
+    photoViewer.style.cssText = 'display: none; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px);';
+    
+    photoViewer.innerHTML = `
+      <div class="relative max-w-5xl max-h-full flex items-center">
+        <button id="photo-viewer-prev" 
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 text-4xl z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center transition-all">
+          ‹
+        </button>
+        <button onclick="closePhotoViewer()" 
+                class="absolute -top-10 right-0 text-white hover:text-gray-300 text-3xl z-10">
+          &times;
+        </button>
+        <div class="relative">
+          <img id="photo-viewer-img" 
+               class="max-w-full max-h-[85vh] rounded-lg shadow-2xl"
+               alt="">
+          <div id="photo-viewer-info" 
+               class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-4 rounded-b-lg">
+            <div id="photo-viewer-title" class="font-semibold"></div>
+            <div id="photo-viewer-counter" class="text-sm text-gray-300 mt-1"></div>
+          </div>
+        </div>
+        <button id="photo-viewer-next" 
+                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 text-4xl z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center transition-all">
+          ›
+        </button>
+      </div>
+    `;
+    
+    document.body.appendChild(photoViewer);
+    
+    // Close on click outside
+    photoViewer.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePhotoViewer();
+      }
+    });
+  }
+  
+  // Store current photo data
+  photoViewer.dataset.photoArray = photoArray ? JSON.stringify(photoArray) : '[]';
+  photoViewer.dataset.currentIndex = currentIndex.toString();
+  photoViewer.dataset.locationName = locationName;
+  
+  // Set up navigation if we have multiple photos
+  const prevBtn = document.getElementById('photo-viewer-prev');
+  const nextBtn = document.getElementById('photo-viewer-next');
+  
+  if (photoArray && photoArray.length > 1) {
+    prevBtn.style.display = 'flex';
+    nextBtn.style.display = 'flex';
+    
+    prevBtn.onclick = () => navigatePhotoViewer('prev');
+    nextBtn.onclick = () => navigatePhotoViewer('next');
+    
+    updatePhotoViewer(photoArray, currentIndex, locationName);
+  } else {
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+    
+    // Single photo mode
+    document.getElementById('photo-viewer-img').src = photoSrc;
+    document.getElementById('photo-viewer-title').textContent = locationName;
+    document.getElementById('photo-viewer-counter').textContent = '';
+  }
+  
+  // Show viewer
+  photoViewer.style.display = 'flex';
+}
+
+function navigatePhotoViewer(direction) {
+  const photoViewer = document.getElementById('photo-viewer');
+  const photoArray = JSON.parse(photoViewer.dataset.photoArray || '[]');
+  const locationName = photoViewer.dataset.locationName || '';
+  let currentIndex = parseInt(photoViewer.dataset.currentIndex || '0');
+  
+  if (photoArray.length === 0) return;
+  
+  // Calculate new index
+  if (direction === 'next') {
+    currentIndex = (currentIndex + 1) % photoArray.length;
+  } else {
+    currentIndex = currentIndex === 0 ? photoArray.length - 1 : currentIndex - 1;
+  }
+  
+  photoViewer.dataset.currentIndex = currentIndex.toString();
+  updatePhotoViewer(photoArray, currentIndex, locationName);
+}
+
+function updatePhotoViewer(photoArray, currentIndex, locationName = '') {
+  const photo = photoArray[currentIndex];
+  const img = document.getElementById('photo-viewer-img');
+  const title = document.getElementById('photo-viewer-title');
+  const counter = document.getElementById('photo-viewer-counter');
+  
+  // Use high-res version for full screen
+  const highResSrc = photo.src.replace('-small.jpg', '-large.jpg');
+  
+  img.src = highResSrc;
+  title.textContent = locationName || photo.alt || 'Photo';
+  counter.textContent = `${currentIndex + 1} / ${photoArray.length}`;
+  
+  if (photo.author) {
+    counter.textContent += ` • 📸 ${photo.author}`;
+  }
+}
+
+function closePhotoViewer() {
+  const photoViewer = document.getElementById('photo-viewer');
+  if (photoViewer) {
+    photoViewer.style.display = 'none';
+  }
+}
+
+function openTimelinePhotoViewer(locationId, dayNum, photoIndex) {
+  const preview = document.querySelector(`[data-location="${locationId}"][data-day="${dayNum}"]`);
+  if (!preview) return;
+  
+  const allPhotos = JSON.parse(preview.dataset.allPhotos || '[]');
+  if (allPhotos.length === 0) return;
+  
+  const locationName = preview.closest('.location-item').querySelector('.location-name').textContent;
+  
+  openPhotoViewer(allPhotos[photoIndex].src, locationName, allPhotos, photoIndex);
+}
+
+async function loadInspirationPreview(category, dayNum, locationName) {
+  const containerId = `inspiration-preview-${dayNum}-${locationName.replace(/\s+/g, '-')}`;
+  const container = document.getElementById(containerId);
+  
+  if (!container) return;
+  
+  try {
+    // Load photo info
+    const response = await fetch('images/inspiration/photo-info.json');
+    const photoInfo = await response.json();
+    
+    // Filter photos by category and get first 3
+    const categoryPhotos = photoInfo.filter(photo => photo.category === category).slice(0, 3);
+    
+    if (categoryPhotos.length === 0) {
+      container.innerHTML = '<div class="text-center text-gray-500 text-sm col-span-3">Фото не найдены</div>';
+      return;
+    }
+    
+    // Generate preview HTML
+    container.innerHTML = categoryPhotos.map(photo => `
+      <div class="cursor-pointer group" onclick="openPhotoViewer('images/inspiration/${photo.category}/${photo.filename}-large.jpg', '${photo.description}')">
+        <img src="images/inspiration/${photo.category}/${photo.filename}-small.jpg" 
+             alt="${photo.description}"
+             class="w-full h-16 object-cover rounded-md shadow-sm group-hover:shadow-md transition-shadow"
+             onerror="this.style.display='none'">
+      </div>
+    `).join('');
+    
+  } catch (error) {
+    console.error('Ошибка загрузки inspiration фото:', error);
+    container.innerHTML = '<div class="text-center text-red-500 text-sm col-span-3">Ошибка загрузки</div>';
+  }
+}
+
+function openInspirationGallery(category, locationName) {
+  // Create inspiration gallery modal
+  let galleryModal = document.getElementById('inspiration-gallery-modal');
+  if (!galleryModal) {
+    galleryModal = document.createElement('div');
+    galleryModal.id = 'inspiration-gallery-modal';
+    galleryModal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
+    galleryModal.style.cssText = 'display: none; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px);';
+    
+    galleryModal.innerHTML = `
+      <div class="bg-white rounded-lg max-w-4xl max-h-full overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+          <h3 id="gallery-title" class="text-xl font-bold text-gray-800"></h3>
+          <button onclick="closeInspirationGallery()" 
+                  class="text-gray-500 hover:text-gray-700 text-2xl">
+            &times;
+          </button>
+        </div>
+        <div id="gallery-content" class="p-4 overflow-y-auto max-h-96">
+          <div class="text-center">Загрузка...</div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(galleryModal);
+    
+    // Close on click outside
+    galleryModal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeInspirationGallery();
+      }
+    });
+  }
+  
+  // Set title and load content
+  document.getElementById('gallery-title').textContent = `${locationName} - Галерея вдохновения`;
+  loadInspirationGalleryContent(category);
+  
+  // Show gallery
+  galleryModal.style.display = 'flex';
+}
+
+async function loadInspirationGalleryContent(category) {
+  const container = document.getElementById('gallery-content');
+  
+  try {
+    // Load photo info
+    const response = await fetch('images/inspiration/photo-info.json');
+    const photoInfo = await response.json();
+    
+    // Filter photos by category
+    const categoryPhotos = photoInfo.filter(photo => photo.category === category);
+    
+    if (categoryPhotos.length === 0) {
+      container.innerHTML = '<div class="text-center text-gray-500">Фото не найдены для этой категории</div>';
+      return;
+    }
+    
+    // Generate gallery grid
+    container.innerHTML = `
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        ${categoryPhotos.map(photo => `
+          <div class="cursor-pointer group" onclick="openPhotoViewer('images/inspiration/${photo.category}/${photo.filename}-large.jpg', '${photo.description}')">
+            <img src="images/inspiration/${photo.category}/${photo.filename}-small.jpg" 
+                 alt="${photo.description}"
+                 class="w-full h-32 object-cover rounded-lg shadow-md group-hover:shadow-lg transition-all group-hover:scale-105"
+                 onerror="this.parentElement.style.display='none'">
+            <div class="mt-2 text-xs text-gray-600 text-center">
+              <div class="font-medium">${photo.description}</div>
+              <div class="text-gray-500">📸 ${photo.author}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    
+  } catch (error) {
+    console.error('Ошибка загрузки галереи:', error);
+    container.innerHTML = '<div class="text-center text-red-500">Ошибка загрузки галереи</div>';
+  }
+}
+
+function closeInspirationGallery() {
+  const galleryModal = document.getElementById('inspiration-gallery-modal');
+  if (galleryModal) {
+    galleryModal.style.display = 'none';
+  }
 }
 
 function addNote() {
@@ -446,10 +894,39 @@ function getCategoryTitle(category) {
   return titles[category] || category;
 }
 
-// Close modal on Escape key
+// Handle keyboard navigation
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     closeModal();
+    closePhotoViewer();
+    closeInspirationGallery();
+  }
+  
+  // Arrow keys for photo viewer navigation
+  const photoViewer = document.getElementById('photo-viewer');
+  if (photoViewer && photoViewer.style.display === 'flex') {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      const direction = e.key === "ArrowRight" ? "next" : "prev";
+      navigatePhotoViewer(direction);
+      return;
+    }
+  }
+  
+  // Arrow keys for photo navigation in timeline
+  if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+    const focusedPreview = document.querySelector('.location-photo-preview:hover') || 
+                          document.querySelector('.location-photo-preview .timeline-photo-image:focus');
+    
+    if (focusedPreview) {
+      e.preventDefault();
+      const preview = focusedPreview.closest('.location-photo-preview');
+      const locationId = preview.dataset.location;
+      const dayNum = preview.dataset.day;
+      const direction = e.key === "ArrowRight" ? "next" : "prev";
+      
+      changeLocationPhoto(locationId, dayNum, direction);
+    }
   }
 });
 
@@ -484,4 +961,10 @@ window.addLocationNote = addLocationNote;
 window.deleteNote = deleteNote;
 window.toggleChecklistItem = toggleChecklistItem;
 window.showLocationDetails = showLocationDetails;
+window.openPhotoViewer = openPhotoViewer;
+window.closePhotoViewer = closePhotoViewer;
+window.openTimelinePhotoViewer = openTimelinePhotoViewer;
+window.openInspirationGallery = openInspirationGallery;
+window.closeInspirationGallery = closeInspirationGallery;
+window.changeLocationPhoto = changeLocationPhoto;
 
