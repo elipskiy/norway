@@ -25,16 +25,16 @@ const MAX_CONCURRENT_REQUESTS = 2;
 const REQUEST_DELAY = 100; // ms between requests
 const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours
 
-// Color mapping for location types
+// Color mapping for location types - Enhanced vibrant colors
 const typeColors = {
-  logistics: "#8B5CF6",
-  shopping: "#F59E0B",
-  accommodation: "#10B981",
-  activity: "#EF4444",
-  sightseeing: "#3B82F6",
-  transport: "#6B7280",
-  hidden_gem: "#EC4899",
-  optional: "#F97316",
+  logistics: "#8B5CF6", // Purple - логистика
+  shopping: "#F59E0B", // Amber - покупки  
+  accommodation: "#059669", // Emerald - жилье
+  activity: "#DC2626", // Red - активности
+  sightseeing: "#2563EB", // Blue - достопримечательности
+  transport: "#6B7280", // Gray - транспорт
+  hidden_gem: "#DB2777", // Pink - жемчужины
+  optional: "#EA580C", // Orange - опциональные
 };
 
 function getLocationTypeEmoji(type) {
@@ -49,6 +49,18 @@ function getLocationTypeEmoji(type) {
     hidden_gem: "💎",
   };
   return emojis[type] || "📍";
+}
+
+// Helper function to lighten colors for hover effect
+function lightenColor(hex, percent) {
+  const num = parseInt(hex.replace("#", ""), 16);
+  const amt = Math.round(2.55 * percent * 100);
+  const R = (num >> 16) + amt;
+  const G = (num >> 8 & 0x00FF) + amt;
+  const B = (num & 0x0000FF) + amt;
+  return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+    (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+    (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
 }
 
 // Initialize Google Map
@@ -128,7 +140,13 @@ function initMap() {
 }
 
 function clearMap() {
-  markers.forEach((item) => item.marker.setMap(null));
+  markers.forEach((item) => {
+    // Clear pulse intervals for hidden gems
+    if (item.marker._pulseInterval) {
+      clearInterval(item.marker._pulseInterval);
+    }
+    item.marker.setMap(null);
+  });
   routeLines.forEach((line) => line.setMap(null));
   gemRoutes.forEach((line) => line.setMap(null));
   directionsRenderers.forEach((renderer) => renderer.setMap(null));
@@ -149,9 +167,9 @@ function addLocationMarker(location, dayNum) {
 
   const markerIcon = {
     path: google.maps.SymbolPath.CIRCLE,
-    scale: 12,
+    scale: 10,
     fillColor: color,
-    fillOpacity: 0.9,
+    fillOpacity: 0.95,
     strokeColor: "white",
     strokeWeight: 3,
   };
@@ -162,6 +180,31 @@ function addLocationMarker(location, dayNum) {
     title: location.name,
     icon: markerIcon,
   });
+
+  // Add subtle pulsing animation for hidden gems
+  if (location.type === 'hidden_gem') {
+    let pulseScale = 10;
+    let pulseDirection = 1;
+    const pulseInterval = setInterval(() => {
+      if (pulseScale >= 12) pulseDirection = -1;
+      if (pulseScale <= 8) pulseDirection = 1;
+      
+      pulseScale += pulseDirection * 0.2;
+      
+      const pulsingIcon = {
+        ...markerIcon,
+        scale: pulseScale,
+      };
+      
+      // Only apply if marker is still on map and not being hovered
+      if (marker.getMap() && !marker._isHovered) {
+        marker.setIcon(pulsingIcon);
+      }
+    }, 150);
+    
+    // Store interval for cleanup
+    marker._pulseInterval = pulseInterval;
+  }
 
   const contentString = `
     <div style="max-width: 300px; padding: 12px; font-family: system-ui, sans-serif;">
@@ -192,23 +235,27 @@ ${
 
   // Hover effects with animation-like behavior
   marker.addListener("mouseover", () => {
+    marker._isHovered = true; // Flag to pause pulsing
+    
     const hoveredIcon = {
       ...markerIcon,
-      scale: 18, // Заметно увеличиваем размер
-      strokeWeight: 5, // Утолщаем обводку
-      fillOpacity: 1.0, // Делаем полностью непрозрачным
-      strokeColor: "#FFD700", // Золотая обводка при hover
+      scale: 13, // Аккуратное небольшое увеличение
+      strokeWeight: 3, // Оставляем обводку как есть
+      fillOpacity: 1.0, // Полная непрозрачность
+      strokeColor: "#FFD700", // Золотая обводка
+      fillColor: lightenColor(color, 0.1), // Менее агрессивное осветление
     };
     marker.setIcon(hoveredIcon);
 
-    // Добавляем небольшую анимацию подпрыгивания
+    // Быстрая анимация подъема
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(() => {
       marker.setAnimation(null);
-    }, 200); // Останавливаем анимацию через 200мс
+    }, 150); // Быстрее анимация
   });
 
   marker.addListener("mouseout", () => {
+    marker._isHovered = false; // Resume pulsing if applicable
     marker.setIcon(markerIcon); // Возвращаем исходный размер и цвет
   });
 
