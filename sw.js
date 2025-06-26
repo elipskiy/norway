@@ -3,7 +3,10 @@ const urlsToCache = [
   "/",
   "/index.html",
   "/styles.css",
-  "/script.js",
+  "/scripts/index.js",
+  "/scripts/map.js",
+  "/scripts/data.js",
+  "/map.css",
   "https://cdn.tailwindcss.com",
   "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap",
 ];

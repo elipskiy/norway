@@ -140,9 +140,10 @@
 norway-trip/
 ├── index.html          # Главная страница
 ├── styles.css          # Стили
-├── script.js           # JavaScript логика
+├── scripts/index.js           # JavaScript логика
 ├── README.md           # Документация
 ├── .gitignore          # Git ignore файл
+├── scripts/data.js          # Данные маршрута
 └── sw.js              # Service Worker (опционально)
 ```
 
@@ -150,7 +151,7 @@ norway-trip/
 
 ### Изменение маршрута
 
-Отредактируйте массив `tripData.days` в файле `script.js`:
+Отредактируйте массив `tripData.days` в файле `scripts/data.js`:
 
 ```javascript
 const tripData = {
@@ -167,7 +168,7 @@ const tripData = {
 
 ### Изменение чек-листа
 
-Отредактируйте объект `checklistData` в файле `script.js`:
+Отредактируйте объект `checklistData` в файле `scripts/data.js`:
 
 ```javascript
 const checklistData = {
@@ -180,7 +181,7 @@ const checklistData = {
 
 ### Изменение бюджета
 
-Отредактируйте массив `budgetData` в файле `script.js`:
+Отредактируйте массив `budgetData` в файле `scripts/data.js`:
 
 ```javascript
 const budgetData = [
